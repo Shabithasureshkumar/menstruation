@@ -1,10 +1,19 @@
 import React from 'react';
 import { Droplet, Pill } from 'lucide-react';
-import type { BloodColor, BloodFlow, CrampSeverity, ProductsUsed as ProductsUsedType } from '../../types/dailyLog';
+import type {
+  BloodColor,
+  BloodFlow,
+  ClotSize,
+  CrampSeverity,
+  EnergyLevel,
+  ProductsUsed as ProductsUsedType,
+} from '../../types/dailyLog';
 import { BloodFlowSelector } from './BloodFlowSelector';
 import { CrampsLevel } from './CrampsLevel';
 import { ProductsUsed } from './ProductsUsed';
 import { BloodColorSelector } from './BloodColorSelector';
+import { BloodClotsCard } from './BloodClotsCard';
+import { EnergyLevelCard } from './EnergyLevelCard';
 import { ToggleFeatureCard } from './ToggleFeatureCard';
 import { AiInsightCard } from './AiInsightCard';
 
@@ -16,6 +25,8 @@ interface MenstruationPhaseCardProps {
   productsUsed: ProductsUsedType;
   bloodColor: BloodColor;
   clotsPresent: boolean;
+  clotSize?: ClotSize;
+  energyLevel: EnergyLevel;
   medicationActive: boolean;
   medicationName: string;
   aiInsight: {
@@ -26,7 +37,9 @@ interface MenstruationPhaseCardProps {
   onSelectCrampsSeverity: (sev: CrampSeverity) => void;
   onUpdateProductCount: (product: keyof ProductsUsedType, delta: number) => void;
   onSelectBloodColor: (color: BloodColor) => void;
+  onSelectEnergyLevel: (level: EnergyLevel) => void;
   onToggleClots: () => void;
+  onSelectClotSize: (size: ClotSize) => void;
   onToggleMedication: () => void;
 }
 
@@ -38,6 +51,8 @@ export const MenstruationPhaseCard: React.FC<MenstruationPhaseCardProps> = ({
   productsUsed,
   bloodColor,
   clotsPresent,
+  clotSize,
+  energyLevel,
   medicationActive,
   medicationName,
   aiInsight,
@@ -45,7 +60,9 @@ export const MenstruationPhaseCard: React.FC<MenstruationPhaseCardProps> = ({
   onSelectCrampsSeverity,
   onUpdateProductCount,
   onSelectBloodColor,
+  onSelectEnergyLevel,
   onToggleClots,
+  onSelectClotSize,
   onToggleMedication,
 }) => {
   return (
@@ -98,26 +115,24 @@ export const MenstruationPhaseCard: React.FC<MenstruationPhaseCardProps> = ({
           />
         </div>
 
-        {/* Row 3: Clots (3 cols) + Medication (3 cols) + AI Insight (6 cols) */}
-        <div className="col-span-6 sm:col-span-3 lg:col-span-3 flex">
-          <ToggleFeatureCard
-            title="Clots present"
-            subtitle="Track blood clots"
-            isActive={clotsPresent}
-            onToggle={onToggleClots}
-            iconBgColor="bg-[#F8F3F9]"
-            activeToggleColor="bg-[#955BE3]"
-            icon={
-              <Droplet
-                className={`w-4 h-4 transition-colors ${
-                  clotsPresent ? 'text-[#955BE3] fill-[#955BE3]' : 'text-gray-400'
-                }`}
-              />
-            }
+        {/* Row 3: Blood Clots with Size (4 cols) + Energy Level (4 cols) + Medication (4 cols) */}
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 flex">
+          <BloodClotsCard
+            clotsPresent={clotsPresent}
+            clotSize={clotSize}
+            onToggleClots={onToggleClots}
+            onSelectClotSize={onSelectClotSize}
           />
         </div>
 
-        <div className="col-span-6 sm:col-span-3 lg:col-span-3 flex">
+        <div className="col-span-12 sm:col-span-6 lg:col-span-4 flex">
+          <EnergyLevelCard
+            energyLevel={energyLevel}
+            onSelectEnergyLevel={onSelectEnergyLevel}
+          />
+        </div>
+
+        <div className="col-span-12 sm:col-span-12 lg:col-span-4 flex">
           <ToggleFeatureCard
             title="Medication"
             subtitle={medicationName}
@@ -129,7 +144,8 @@ export const MenstruationPhaseCard: React.FC<MenstruationPhaseCardProps> = ({
           />
         </div>
 
-        <div className="col-span-12 sm:col-span-6 lg:col-span-6 flex">
+        {/* Row 4: AI Insight (12 cols) */}
+        <div className="col-span-12 flex">
           <AiInsightCard
             title={aiInsight.title}
             description={aiInsight.description}

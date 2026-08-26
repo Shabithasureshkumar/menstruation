@@ -4,6 +4,10 @@ export type CrampSeverity = 'None' | 'Mild' | 'Moderate' | 'Severe';
 
 export type BloodColor = 'Bright Red' | 'Dark Red' | 'Brown' | 'Pink';
 
+export type EnergyLevel = 'Low' | 'Medium' | 'High';
+
+export type ClotSize = 'Small' | 'Medium' | 'Large';
+
 export interface ProductsUsed {
   pads: number;
   tampons: number;
@@ -95,6 +99,8 @@ export interface DailyLogState {
   productsUsed: ProductsUsed;
   bloodColor: BloodColor;
   clotsPresent: boolean;
+  clotSize?: ClotSize;
+  energyLevel: EnergyLevel;
   medicationActive: boolean;
   medicationName: string;
   aiInsight: {

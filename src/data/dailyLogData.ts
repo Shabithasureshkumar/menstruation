@@ -120,6 +120,8 @@ export const defaultDailyLogState: DailyLogState = {
   },
   bloodColor: 'Bright Red',
   clotsPresent: false,
+  clotSize: 'Small',
+  energyLevel: 'Medium',
   medicationActive: true,
   medicationName: 'Ibuprofen 400mg',
   aiInsight: {

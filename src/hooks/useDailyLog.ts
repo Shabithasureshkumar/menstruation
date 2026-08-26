@@ -3,9 +3,11 @@ import type {
   BloodColor,
   BloodFlow,
   CalendarDay,
+  ClotSize,
   ConnectedDevice,
   CrampSeverity,
   DailyLogState,
+  EnergyLevel,
   ProductsUsed,
   QuickLogType,
   SymptomKey,
@@ -221,13 +223,32 @@ export function useDailyLog() {
     showToast(`Blood Color updated to ${color}`);
   }, [showToast]);
 
-  // Toggles
+  // Energy Level
+  const setEnergyLevel = useCallback((level: EnergyLevel) => {
+    setLogState((prev) => ({ ...prev, energyLevel: level }));
+    showToast(`Energy Level updated to ${level}`);
+  }, [showToast]);
+
+  // Blood Clots & Size
   const toggleClotsPresent = useCallback(() => {
     setLogState((prev) => {
       const next = !prev.clotsPresent;
       showToast(next ? 'Clots tracked: Yes' : 'Clots tracked: None');
-      return { ...prev, clotsPresent: next };
+      return {
+        ...prev,
+        clotsPresent: next,
+        clotSize: next ? (prev.clotSize || 'Small') : prev.clotSize,
+      };
     });
+  }, [showToast]);
+
+  const setClotSize = useCallback((size: ClotSize) => {
+    setLogState((prev) => ({
+      ...prev,
+      clotsPresent: true,
+      clotSize: size,
+    }));
+    showToast(`Clot size tracked: ${size}`);
   }, [showToast]);
 
   const toggleMedication = useCallback(() => {
@@ -322,7 +343,9 @@ export function useDailyLog() {
     setCrampsScore,
     updateProductCount,
     setBloodColor,
+    setEnergyLevel,
     toggleClotsPresent,
+    setClotSize,
     toggleMedication,
     updateWellnessMetrics,
     updateSymptom,

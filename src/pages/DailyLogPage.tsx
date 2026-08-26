@@ -44,7 +44,9 @@ export const DailyLogPage: React.FC = () => {
     setCrampsSeverity,
     updateProductCount,
     setBloodColor,
+    setEnergyLevel,
     toggleClotsPresent,
+    setClotSize,
     toggleMedication,
     updateWellnessMetrics,
     updateSymptom,
@@ -84,6 +86,8 @@ export const DailyLogPage: React.FC = () => {
               productsUsed={logState.productsUsed}
               bloodColor={logState.bloodColor}
               clotsPresent={logState.clotsPresent}
+              clotSize={logState.clotSize}
+              energyLevel={logState.energyLevel}
               medicationActive={logState.medicationActive}
               medicationName={logState.medicationName}
               aiInsight={logState.aiInsight}
@@ -91,7 +95,9 @@ export const DailyLogPage: React.FC = () => {
               onSelectCrampsSeverity={setCrampsSeverity}
               onUpdateProductCount={updateProductCount}
               onSelectBloodColor={setBloodColor}
+              onSelectEnergyLevel={setEnergyLevel}
               onToggleClots={toggleClotsPresent}
+              onSelectClotSize={setClotSize}
               onToggleMedication={toggleMedication}
             />
 
