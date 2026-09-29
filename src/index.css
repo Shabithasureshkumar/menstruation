@@ -3,17 +3,27 @@
 @tailwind utilities;
 
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
-  
   html, body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    background-color: #FFFFFF;
-    color: #111827;
-    overflow-x: hidden;
+    background-color: #FFFCFE;
+    color: #17152B;
+  }
+
+  /* Visible keyboard focus for every interactive control. */
+  :focus-visible {
+    outline: 2px solid #F43F8F;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Hides the scrollbar track only; the region stays scrollable by touch, wheel and keyboard. */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -104,4 +114,30 @@ input[type="range"]::-moz-range-track {
 
 .animate-pulse-subtle {
   animation: pulseSubtle 3s ease-in-out infinite;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes drawerIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-modal-in {
+  animation: modalIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-drawer-in {
+  animation: drawerIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

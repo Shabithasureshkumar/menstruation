@@ -1,179 +1,182 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Info } from 'lucide-react';
 import { useDailyLog } from '../hooks/useDailyLog';
-import { initialPatientProfile, initialCycleSummary } from '../data/dailyLogData';
-
-// Left Column Components
-import { DailyLogHeader } from '../components/daily-log/DailyLogHeader';
-import { DailyLogCalendar } from '../components/daily-log/DailyLogCalendar';
-import { MenstruationPhaseCard } from '../components/daily-log/MenstruationPhaseCard';
-import { WellnessMetrics } from '../components/daily-log/WellnessMetrics';
-import { SymptomsTracking } from '../components/daily-log/SymptomsTracking';
-import { EditWellnessModal } from '../components/daily-log/EditWellnessModal';
-import { SymptomTrendsModal } from '../components/daily-log/SymptomTrendsModal';
-
-// Right Column Sidebar Components
-import { PatientProfile } from '../components/sidebar/PatientProfile';
-import { CycleSummary } from '../components/sidebar/CycleSummary';
-import { TodayInsights } from '../components/sidebar/TodayInsights';
-import { PersonalNotes } from '../components/sidebar/PersonalNotes';
-import { ConnectedDevices } from '../components/sidebar/ConnectedDevices';
-import { QuickLog } from '../components/sidebar/QuickLog';
-import { QuickLogModal } from '../components/sidebar/QuickLogModal';
-
-// Common Components
-import { Toast } from '../components/common/Toast';
+import { useCycle, useCyclePredictions } from '../hooks/useCycle';
+import { createId } from '../lib/id';
+import type { DailyLogEntry, MedicationEntry, ProductEntry } from '../types/dailyLog';
+import { ErrorState, LoadingState } from '../components/common/AsyncState';
+import { ConfirmDialog } from '../components/common/ConfirmDialog';
+import { DailyLogDateSelectorCard } from '../components/daily-log/DailyLogDateSelectorCard';
+import { DailyLogPhaseHeader } from '../components/daily-log/DailyLogPhaseHeader';
+import { DailyLogAiInsightBanner } from '../components/daily-log/DailyLogAiInsightBanner';
+import { DailyLogBloodFlowCard } from '../components/daily-log/DailyLogBloodFlowCard';
+import { DailyLogMoodCard } from '../components/daily-log/DailyLogMoodCard';
+import { DailyLogProductsUsedCard } from '../components/daily-log/DailyLogProductsUsedCard';
+import { DailyLogBloodColorCard } from '../components/daily-log/DailyLogBloodColorCard';
+import { DailyLogCrampsCard } from '../components/daily-log/DailyLogCrampsCard';
+import { DailyLogClotsCard } from '../components/daily-log/DailyLogClotsCard';
+import { DailyLogEnergyCard } from '../components/daily-log/DailyLogEnergyCard';
+import { DailyLogMedicationCard } from '../components/daily-log/DailyLogMedicationCard';
+import { DailyLogMedicationModal } from '../components/daily-log/DailyLogMedicationModal';
+import { DailyLogAddProductModal } from '../components/daily-log/DailyLogAddProductModal';
 
 export const DailyLogPage: React.FC = () => {
-  const {
-    selectedDate,
-    calendarDays,
-    logState,
-    devices,
-    toast,
-    isEditWellnessOpen,
-    isSymptomTrendsOpen,
-    quickLogModalType,
-    setIsEditWellnessOpen,
-    setIsSymptomTrendsOpen,
-    setQuickLogModalType,
-    hideToast,
-    selectDate,
-    goToToday,
-    shiftCalendarRange,
-    setBloodFlow,
-    setCrampsSeverity,
-    updateProductCount,
-    setBloodColor,
-    setEnergyLevel,
-    toggleClotsPresent,
-    setClotSize,
-    toggleMedication,
-    updateWellnessMetrics,
-    updateSymptom,
-    setPersonalNote,
-    savePersonalNote,
-    syncDevice,
-  } = useDailyLog();
+  const log = useDailyLog();
+  const { today } = useCycle();
+
+  const [productModalOpen, setProductModalOpen] = useState(false);
+  const [medModal, setMedModal] = useState<{ open: boolean; editing: MedicationEntry | null }>({ open: false, editing: null });
+  const [medToDelete, setMedToDelete] = useState<MedicationEntry | null>(null);
+  const selectedPrediction = useCyclePredictions(log.selectedDate, log.selectedDate);
+
+  if (log.status === 'loading') return <LoadingState label="Loading daily log" rows={5} />;
+  if (log.status === 'error') return <ErrorState message="We couldn't load your logs." onRetry={log.retry} />;
+
+  const { draft, selectedDate, canEditSelectedDate: canEdit } = log;
+  const info = selectedPrediction.byDate[selectedDate] ?? null;
+  const disabled = !canEdit;
+  const set = <K extends keyof DailyLogEntry>(key: K, value: DailyLogEntry[K]) => log.updateDraft((d) => ({ ...d, [key]: value }));
+  const medsForDate = log.medications.filter((m) => m.date === selectedDate);
+
+  const DEFAULT_PRODUCTS: ProductEntry[] = [
+    { id: 'prod-pad', type: 'Pad', label: 'Pads', size: 'Small', quantity: 2 },
+    { id: 'prod-tampon', type: 'Tampon', label: 'Tampons', size: 'Light', quantity: 2 },
+    { id: 'prod-cup', type: 'Menstrual cup', label: 'Menstrual cup', size: 'Medium', quantity: 0 },
+  ];
+  const currentProducts = draft.products.length > 0 ? draft.products : DEFAULT_PRODUCTS;
+
+  const updateProduct = (id: string, patch: Partial<Pick<ProductEntry, 'quantity' | 'size'>>) =>
+    log.updateDraft((d) => ({
+      ...d,
+      products: (d.products.length > 0 ? d.products : DEFAULT_PRODUCTS).map((p) => (p.id === id ? { ...p, ...patch } : p)),
+    }));
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-gray-900 selection:bg-brand-pink-200">
-      {/* Centered Maximum Container */}
-      <div className="max-w-[1440px] mx-auto px-[clamp(0.875rem,2vw,2.5rem)] py-[clamp(1rem,2vw,2rem)]">
-        {/* Main Grid: Fluid Left Column + Fluid Right Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_clamp(17.5rem,22vw,20.5rem)] gap-[clamp(1rem,2vw,2rem)] items-start">
-          {/* ============================================================ */}
-          {/* LEFT PRIMARY CONTENT AREA                                    */}
-          {/* ============================================================ */}
-          <main className="min-w-0 self-start flex flex-col gap-[clamp(0.875rem,1.5vw,1.25rem)]">
-            {/* 1. Page Header */}
-            <DailyLogHeader />
+    <div className="w-full space-y-6 sm:space-y-7">
+      <DailyLogDateSelectorCard
+        selectedDate={selectedDate}
+        today={today}
+        savedLogs={log.savedLogs}
+        onSelectDate={log.selectDate}
+      />
 
-            {/* 2. Horizontal Calendar */}
-            <DailyLogCalendar
-              selectedDate={selectedDate}
-              calendarDays={calendarDays}
-              onSelectDate={selectDate}
-              onGoToToday={goToToday}
-              onShiftCalendar={shiftCalendarRange}
+      <DailyLogPhaseHeader date={selectedDate} isToday={selectedDate === today} info={info} />
+
+      {!canEdit && (
+        <p role="note" className="flex items-start gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <Info className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+          This date is in the future. You can view the estimated phase, but logging is only available for today and earlier.
+        </p>
+      )}
+
+      <DailyLogAiInsightBanner phase={info?.phase ?? null} />
+
+      {/* Two Column Layout Matching Screenshot */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-start w-full">
+        {/* Left Column: Blood Flow + Products Used */}
+        <div className="w-full space-y-5 sm:space-y-6">
+          <DailyLogBloodFlowCard selectedFlow={draft.flow ?? 'Medium'} onSelectFlow={(v) => set('flow', v)} disabled={disabled} />
+          <DailyLogProductsUsedCard
+            products={currentProducts}
+            onChangeProduct={updateProduct}
+            onDeleteProduct={(id) =>
+              log.updateDraft((d) => ({
+                ...d,
+                products: (d.products.length > 0 ? d.products : DEFAULT_PRODUCTS).filter((p) => p.id !== id),
+              }))
+            }
+            onOpenAddModal={() => setProductModalOpen(true)}
+            disabled={disabled}
+          />
+        </div>
+
+        {/* Right Column: Mood + Blood Color + (Cramps/Clots) + (Energy/Medication) */}
+        <div className="w-full space-y-5 sm:space-y-6">
+          <DailyLogMoodCard selectedMood={draft.mood ?? 'Irritable'} onSelectMood={(v) => set('mood', v)} disabled={disabled} />
+          <DailyLogBloodColorCard selectedColor={draft.bloodColor ?? 'Bright Red'} onSelectColor={(v) => set('bloodColor', v)} disabled={disabled} />
+
+          {/* Row 1: Cramps Level + Clots Present */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
+            <DailyLogCrampsCard
+              cramps={draft.cramps ?? 'Mild'}
+              onChangeCramps={(v) => set('cramps', v)}
+              disabled={disabled}
             />
-
-            {/* 3. Menstruation Phase Dashboard */}
-            <MenstruationPhaseCard
-              formattedDate={logState.formattedDate}
-              bloodFlow={logState.bloodFlow}
-              crampsScore={logState.crampsScore}
-              crampsSeverity={logState.crampsSeverity}
-              productsUsed={logState.productsUsed}
-              bloodColor={logState.bloodColor}
-              clotsPresent={logState.clotsPresent}
-              clotSize={logState.clotSize}
-              energyLevel={logState.energyLevel}
-              medicationActive={logState.medicationActive}
-              medicationName={logState.medicationName}
-              aiInsight={logState.aiInsight}
-              onSelectFlow={setBloodFlow}
-              onSelectCrampsSeverity={setCrampsSeverity}
-              onUpdateProductCount={updateProductCount}
-              onSelectBloodColor={setBloodColor}
-              onSelectEnergyLevel={setEnergyLevel}
-              onToggleClots={toggleClotsPresent}
-              onSelectClotSize={setClotSize}
-              onToggleMedication={toggleMedication}
+            <DailyLogClotsCard
+              clotsPresent={draft.clotsPresent ?? true}
+              clotSize={draft.clotSize ?? 'Small'}
+              onChangePresent={(v) => log.updateDraft((d) => ({ ...d, clotsPresent: v, clotSize: v ? (d.clotSize ?? 'Small') : null }))}
+              onChangeSize={(v) => set('clotSize', v)}
+              disabled={disabled}
             />
+          </div>
 
-            {/* 4. Wellness Metrics */}
-            <WellnessMetrics
-              metrics={logState.wellnessMetrics}
-              formattedSubtext={`${logState.formattedDate.replace('2026', '').trim()} – Cycle Day ${logState.cycleDay}`}
-              onOpenEditModal={() => setIsEditWellnessOpen(true)}
+          {/* Row 2: Energy Level + Medication */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            <DailyLogEnergyCard
+              energy={draft.energy ?? 'Medium'}
+              onChangeEnergy={(v) => set('energy', v)}
+              disabled={disabled}
             />
-
-            {/* 5. Symptoms Tracking */}
-            <SymptomsTracking
-              symptoms={logState.symptoms}
-              onUpdateSymptom={updateSymptom}
-              onViewTrends={() => setIsSymptomTrendsOpen(true)}
+            <DailyLogMedicationCard
+              medications={
+                medsForDate.length > 0
+                  ? medsForDate
+                  : [
+                      { id: 'med-ibu', name: 'Ibuprofen', dose: 200, unit: 'mg', form: 'Tablet', date: selectedDate, time: '08:00', status: 'Taken' },
+                      { id: 'med-mef', name: 'Mefenamic Acid', dose: 500, unit: 'mg', form: 'Tablet', date: selectedDate, time: '13:00', status: 'Taken' },
+                    ]
+              }
+              canAdd={canEdit}
+              isPending={log.isMedicationPending}
+              onAdd={() => setMedModal({ open: true, editing: null })}
+              onEdit={(med) => setMedModal({ open: true, editing: med })}
+              onDelete={setMedToDelete}
+              onSetStatus={(med, status) => {
+                const { id, ...rest } = med;
+                log.updateMedication(id, { ...rest, status });
+              }}
             />
-          </main>
-
-          {/* ============================================================ */}
-          {/* RIGHT SIDEBAR                                                */}
-          {/* ============================================================ */}
-          <aside className="self-start flex flex-col gap-[clamp(1rem,1.5vw,1.5rem)] bg-white p-[clamp(1rem,1.5vw,1.25rem)] rounded-3xl border border-gray-100/90 shadow-2xs lg:border-l lg:border-gray-100 lg:shadow-none lg:bg-transparent lg:p-0">
-            {/* 1. Patient Profile Card */}
-            <PatientProfile profile={initialPatientProfile} />
-
-            {/* 2. Cycle Summary */}
-            <CycleSummary summary={initialCycleSummary} />
-
-            {/* 3. Today's Insights */}
-            <TodayInsights insights={logState.insights} />
-
-            {/* 4. Personal Notes */}
-            <PersonalNotes
-              note={logState.personalNote}
-              onChangeNote={setPersonalNote}
-              onSaveNote={savePersonalNote}
-            />
-
-            {/* 5. Connected Devices */}
-            <ConnectedDevices
-              devices={devices}
-              onSyncDevice={syncDevice}
-            />
-
-            {/* 6. Quick Log */}
-            <QuickLog onOpenQuickLog={(type) => setQuickLogModalType(type)} />
-          </aside>
+          </div>
         </div>
       </div>
 
-      {/* Modals & Dialogs */}
-      <EditWellnessModal
-        isOpen={isEditWellnessOpen}
-        onClose={() => setIsEditWellnessOpen(false)}
-        metrics={logState.wellnessMetrics}
-        onSave={updateWellnessMetrics}
+      {/* Bottom Save Log Button */}
+      <div className="flex items-center justify-end pt-4 pb-8">
+        <button
+          type="button"
+          onClick={() => log.saveDraft()}
+          disabled={log.isSaving || disabled}
+          className="px-10 py-3.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white font-bold text-sm tracking-wide shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {log.isSaving ? 'Saving…' : 'Save log'}
+        </button>
+      </div>
+
+      <DailyLogAddProductModal
+        isOpen={productModalOpen}
+        onClose={() => setProductModalOpen(false)}
+        onAdd={(p) => log.updateDraft((d) => ({ ...d, products: [...d.products, { ...p, id: createId('prod') }] }))}
       />
 
-      <SymptomTrendsModal
-        isOpen={isSymptomTrendsOpen}
-        onClose={() => setIsSymptomTrendsOpen(false)}
+      <DailyLogMedicationModal
+        isOpen={medModal.open}
+        editing={medModal.editing}
+        defaultDate={selectedDate}
+        today={today}
+        isSaving={log.isMedicationPending}
+        onClose={() => setMedModal({ open: false, editing: null })}
+        onSubmit={(input) => (medModal.editing ? log.updateMedication(medModal.editing.id, input) : log.addMedication(input))}
       />
 
-      <QuickLogModal
-        type={quickLogModalType}
-        onClose={() => setQuickLogModalType(null)}
-        currentFlow={logState.bloodFlow}
-        wellness={logState.wellnessMetrics}
-        symptoms={logState.symptoms}
-        onUpdateFlow={setBloodFlow}
-        onUpdateWellness={updateWellnessMetrics}
-        onUpdateSymptom={updateSymptom}
+      <ConfirmDialog
+        isOpen={medToDelete !== null}
+        title="Delete medication?"
+        message={medToDelete ? `Remove ${medToDelete.name} from this date? This can't be undone.` : ''}
+        confirmLabel="Delete"
+        onConfirm={() => (medToDelete ? log.removeMedication(medToDelete.id) : false)}
+        onClose={() => setMedToDelete(null)}
       />
-
-      {/* Toast Notification */}
-      <Toast toast={toast} onClose={hideToast} />
     </div>
   );
 };
