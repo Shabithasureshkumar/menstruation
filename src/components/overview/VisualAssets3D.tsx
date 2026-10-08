@@ -543,4 +543,281 @@ export const Visual3DMeditationFloralFrame: React.FC<{ className?: string }> = (
   </svg>
 );
 
+// 3D Pink Calendar with Plus icon for Not Logged Period Tracker Card
+export const Visual3DCalendarPlus: React.FC<{ className?: string }> = ({ className = 'w-20 h-20 sm:w-24 sm:h-24' }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <linearGradient id="calPlusBase" x1="12" y1="20" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFFFFF" />
+        <stop offset="1" stopColor="#FFF0F6" />
+      </linearGradient>
+      <linearGradient id="calPlusTop" x1="12" y1="20" x2="88" y2="46" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FF6EA8" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+    </defs>
+    <rect x="12" y="20" width="76" height="68" rx="18" fill="url(#calPlusBase)" stroke="#FFD1E3" strokeWidth="2" />
+    <rect x="12" y="20" width="76" height="24" rx="16" fill="url(#calPlusTop)" />
+    {/* Spiral Rings */}
+    <rect x="24" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    <rect x="40" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    <rect x="56" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    <rect x="72" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    {/* Centered White Circle with Pink + */}
+    <circle cx="50" cy="60" r="14" fill="#FFFFFF" stroke="#F43F8F" strokeWidth="2.5" />
+    <path d="M50 52 V68 M42 60 H58" stroke="#F43F8F" strokeWidth="3.2" strokeLinecap="round" />
+  </svg>
+);
+
+// 3D Girl holding abdomen for Cramps Level card
+export const Visual3DCrampsGirl: React.FC<{ className?: string }> = ({ className = 'w-20 h-20 sm:w-24 sm:h-24' }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <radialGradient id="crampsGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FFE4F1" />
+        <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+      </radialGradient>
+      <linearGradient id="sweaterGrad" x1="30" y1="45" x2="70" y2="85" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#F5A3C7" />
+        <stop offset="1" stopColor="#E06B9F" />
+      </linearGradient>
+    </defs>
+    {/* Aura */}
+    <circle cx="50" cy="50" r="42" fill="url(#crampsGlow)" />
+    {/* Distress rays on left and right */}
+    <path d="M22 38 L14 34 M20 48 L12 48 M22 58 L14 62" stroke="#F43F8F" strokeWidth="2.2" strokeLinecap="round" />
+    <path d="M78 38 L86 34 M80 48 L88 48 M78 58 L86 62" stroke="#F43F8F" strokeWidth="2.2" strokeLinecap="round" />
+    {/* Hair back */}
+    <ellipse cx="50" cy="36" rx="18" ry="20" fill="#4B2C20" />
+    {/* Head & Neck */}
+    <rect x="46" y="38" width="8" height="10" fill="#FCD5B5" />
+    <circle cx="50" cy="30" r="13" fill="#FCD5B5" />
+    {/* Hair front */}
+    <path d="M36 28 C36 18 64 18 64 28 C60 22 40 22 36 28 Z" fill="#4B2C20" />
+    <path d="M34 26 C33 36 36 46 38 48" stroke="#4B2C20" strokeWidth="4" strokeLinecap="round" />
+    <path d="M66 26 C67 36 64 46 62 48" stroke="#4B2C20" strokeWidth="4" strokeLinecap="round" />
+    {/* Pain Expression */}
+    <path d="M43 28 L47 30 M57 30 L53 28" stroke="#4B2C20" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M44 32 Q46 30 48 32 M52 32 Q54 30 56 32" stroke="#4B2C20" strokeWidth="1.5" strokeLinecap="round" />
+    <ellipse cx="50" cy="37" rx="2" ry="1" fill="#D97706" />
+    <circle cx="44" cy="35" r="2" fill="#FFA0CA" />
+    <circle cx="56" cy="35" r="2" fill="#FFA0CA" />
+    {/* Body / Sweater */}
+    <path d="M34 48 C34 46 66 46 66 48 L72 82 C72 84 28 84 28 82 Z" fill="url(#sweaterGrad)" />
+    {/* Arms clutching stomach */}
+    <path d="M30 52 C34 66 46 72 50 72 C54 72 66 66 70 52" stroke="#D85A92" strokeWidth="6" strokeLinecap="round" fill="none" />
+    <ellipse cx="50" cy="70" rx="6" ry="4" fill="#FCD5B5" />
+  </svg>
+);
+
+// 3D Sanitary Pad with droplets for Blood Flow card
+export const Visual3DSanitaryPad: React.FC<{ className?: string }> = ({ className = 'w-20 h-20 sm:w-24 sm:h-24' }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <radialGradient id="padGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FFF0F6" />
+        <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+      </radialGradient>
+      <linearGradient id="padGrad" x1="25" y1="20" x2="75" y2="80" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFFFFF" />
+        <stop offset="1" stopColor="#FDE8F3" />
+      </linearGradient>
+    </defs>
+    <circle cx="50" cy="50" r="42" fill="url(#padGlow)" />
+    {/* Pad Body rotated -25deg */}
+    <g transform="rotate(-25 50 50)">
+      {/* Wings */}
+      <path d="M32 40 C20 42 20 58 32 60 Z" fill="#FCE7F3" stroke="#FBCFE8" strokeWidth="1.5" />
+      <path d="M68 40 C80 42 80 58 68 60 Z" fill="#FCE7F3" stroke="#FBCFE8" strokeWidth="1.5" />
+      {/* Main Absorbent Core */}
+      <rect x="34" y="16" width="32" height="68" rx="16" fill="url(#padGrad)" stroke="#F9A8D4" strokeWidth="2" />
+      {/* Inner embossed channel lines */}
+      <rect x="40" y="24" width="20" height="52" rx="10" stroke="#F472B6" strokeWidth="1.5" strokeDasharray="3 2" fill="none" />
+      {/* Center Blood Drop */}
+      <path d="M50 44 C50 44 44 52 44 56 C44 59.3 46.7 62 50 62 C53.3 62 56 59.3 56 56 C56 52 50 44 50 44 Z" fill="#F43F8F" />
+      <circle cx="48" cy="54" r="1" fill="#FFFFFF" />
+    </g>
+    {/* Floating droplet accents */}
+    <circle cx="78" cy="32" r="3.5" fill="#F43F8F" />
+    <circle cx="84" cy="46" r="2.5" fill="#F43F8F" />
+    <circle cx="20" cy="66" r="3" fill="#F43F8F" />
+  </svg>
+);
+
+// 3D Clipboard with emoji reaction faces for Symptoms card
+export const Visual3DClipboardFaces: React.FC<{ className?: string }> = ({ className = 'w-20 h-20 sm:w-24 sm:h-24' }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <linearGradient id="clipBgGrad" x1="20" y1="15" x2="80" y2="85" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFF5FA" />
+        <stop offset="1" stopColor="#FCE7F3" />
+      </linearGradient>
+    </defs>
+    {/* Clipboard Base */}
+    <rect x="18" y="16" width="64" height="74" rx="16" fill="url(#clipBgGrad)" stroke="#F9A8D4" strokeWidth="2" />
+    {/* Clip Top */}
+    <rect x="34" y="10" width="32" height="14" rx="6" fill="#F43F8F" />
+    <circle cx="50" cy="16" r="3" fill="#FFFFFF" />
+    {/* Inner Paper Sheet */}
+    <rect x="25" y="26" width="50" height="56" rx="8" fill="#FFFFFF" stroke="#FDE8F3" strokeWidth="1" />
+    {/* Row 1: Happy / Cramps icon */}
+    <circle cx="35" cy="38" r="5.5" fill="#FED7AA" />
+    <circle cx="33.5" cy="36.5" r="0.8" fill="#4B2C20" />
+    <circle cx="36.5" cy="36.5" r="0.8" fill="#4B2C20" />
+    <path d="M33 39 Q35 41 37 39" stroke="#4B2C20" strokeWidth="0.8" strokeLinecap="round" />
+    <rect x="46" y="36" width="22" height="4" rx="2" fill="#F472B6" />
+    {/* Row 2: Sad / Fatigue */}
+    <circle cx="35" cy="52" r="5.5" fill="#FECDD3" />
+    <circle cx="33.5" cy="50.5" r="0.8" fill="#4B2C20" />
+    <circle cx="36.5" cy="50.5" r="0.8" fill="#4B2C20" />
+    <path d="M33 54 Q35 52 37 54" stroke="#4B2C20" strokeWidth="0.8" strokeLinecap="round" />
+    <rect x="46" y="50" width="22" height="4" rx="2" fill="#F472B6" />
+    {/* Row 3: Bloating / Smug */}
+    <circle cx="35" cy="66" r="5.5" fill="#BAE6FD" />
+    <circle cx="33.5" cy="64.5" r="0.8" fill="#4B2C20" />
+    <circle cx="36.5" cy="64.5" r="0.8" fill="#4B2C20" />
+    <path d="M33.5 68 H36.5" stroke="#4B2C20" strokeWidth="0.8" strokeLinecap="round" />
+    <rect x="46" y="64" width="22" height="4" rx="2" fill="#F472B6" />
+    {/* Little yellow mood emoji badge at bottom right */}
+    <circle cx="75" cy="74" r="7" fill="#FDE047" stroke="#FFFFFF" strokeWidth="1.5" />
+    <circle cx="73" cy="72.5" r="1" fill="#4B2C20" />
+    <circle cx="77" cy="72.5" r="1" fill="#4B2C20" />
+    <path d="M72.5 75.5 Q75 78 77.5 75.5" stroke="#4B2C20" strokeWidth="1" strokeLinecap="round" />
+  </svg>
+);
+
+// 3D Calendar with question mark for Next Period card
+export const Visual3DCalendarQuestion: React.FC<{ className?: string }> = ({ className = 'w-20 h-20 sm:w-24 sm:h-24' }) => (
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <linearGradient id="calQBase" x1="12" y1="20" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFFFFF" />
+        <stop offset="1" stopColor="#FFF0F6" />
+      </linearGradient>
+      <linearGradient id="calQTop" x1="12" y1="20" x2="88" y2="46" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FF6EA8" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+    </defs>
+    <rect x="12" y="20" width="76" height="68" rx="18" fill="url(#calQBase)" stroke="#FFD1E3" strokeWidth="2" />
+    <rect x="12" y="20" width="76" height="24" rx="16" fill="url(#calQTop)" />
+    {/* Spiral Rings */}
+    <rect x="24" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    <rect x="40" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    <rect x="56" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    <rect x="72" y="12" width="6" height="16" rx="3" fill="#F43F8F" />
+    {/* Calendar grid lines */}
+    <rect x="20" y="52" width="10" height="8" rx="3" fill="#FCE7F3" />
+    <rect x="36" y="52" width="10" height="8" rx="3" fill="#FCE7F3" />
+    <rect x="20" y="66" width="10" height="8" rx="3" fill="#FCE7F3" />
+    <rect x="36" y="66" width="10" height="8" rx="3" fill="#FCE7F3" />
+    {/* Big Pink Question Mark Badge on bottom right */}
+    <circle cx="68" cy="65" r="16" fill="#F43F8F" stroke="#FFFFFF" strokeWidth="2.5" />
+    <text x="68" y="72" textAnchor="middle" fill="#FFFFFF" fontSize="20" fontWeight="900" fontFamily="sans-serif">?</text>
+  </svg>
+);
+
+// 3D Cute Uterus with question marks for AI Prediction card
+export const Visual3DUterusQuestion: React.FC<{ className?: string }> = ({ className = 'w-24 h-20 sm:w-28 sm:h-24' }) => (
+  <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <linearGradient id="uterusQGrad" x1="10" y1="20" x2="110" y2="85" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFA0CA" />
+        <stop offset="0.5" stopColor="#FF6EA8" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+    </defs>
+    {/* Double Question marks on top right */}
+    <text x="96" y="24" fill="#F43F8F" fontSize="18" fontWeight="900" fontFamily="sans-serif">?</text>
+    <text x="108" y="28" fill="#F472B6" fontSize="15" fontWeight="900" fontFamily="sans-serif">?</text>
+    {/* Cute Uterus body */}
+    <path
+      d="M60 38 C60 38 32 22 16 30 C6 36 8 50 20 50 C34 50 45 57 50 70 C53 77 60 86 60 86 C60 86 67 77 70 70 C75 57 86 50 100 50 C112 50 114 36 104 30 C88 22 60 38 60 38 Z"
+      fill="url(#uterusQGrad)"
+    />
+    {/* Confused / Cute Eyes & blush */}
+    <circle cx="52" cy="56" r="3.2" fill="#4C0519" />
+    <circle cx="68" cy="56" r="3.2" fill="#4C0519" />
+    <circle cx="53" cy="55" r="1" fill="#FFFFFF" />
+    <circle cx="69" cy="55" r="1" fill="#FFFFFF" />
+    <ellipse cx="60" cy="62" rx="2.5" ry="3.5" fill="#4C0519" />
+    <ellipse cx="46" cy="60" rx="3" ry="2" fill="#FB7185" />
+    <ellipse cx="74" cy="60" rx="3" ry="2" fill="#FB7185" />
+    {/* Sweat drop on forehead */}
+    <path d="M58 46 C58 46 55 50 55 52 C55 53.5 56.3 54.5 58 54.5 C59.7 54.5 61 53.5 61 52 C61 50 58 46 58 46 Z" fill="#38BDF8" />
+    {/* Little blood drop companion with confused mouth */}
+    <circle cx="94" cy="80" r="3" fill="#F43F8F" />
+    <circle cx="26" cy="80" r="3" fill="#F43F8F" />
+  </svg>
+);
+
+// 3D Chart, Calendar & Magnifying Glass Illustration for Cycle Insights Not Logged Banner
+export const Visual3DInsightsBannerChart: React.FC<{ className?: string }> = ({ className = 'w-48 h-36 sm:w-64 sm:h-44 md:w-72 md:h-48' }) => (
+  <svg viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" className={`${className} filter drop-shadow-md select-none shrink-0`}>
+    <defs>
+      <linearGradient id="calChartBg" x1="70" y1="20" x2="210" y2="160" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFFFFF" />
+        <stop offset="1" stopColor="#FFF0F6" />
+      </linearGradient>
+      <linearGradient id="bar1" x1="0" y1="0" x2="0" y2="1">
+        <stop stopColor="#FFA0CA" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+      <linearGradient id="bar2" x1="0" y1="0" x2="0" y2="1">
+        <stop stopColor="#FF6EA8" />
+        <stop offset="1" stopColor="#E11D48" />
+      </linearGradient>
+      <linearGradient id="bar3" x1="0" y1="0" x2="0" y2="1">
+        <stop stopColor="#F472B6" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+      <linearGradient id="magGlass" x1="180" y1="90" x2="240" y2="150" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FFA0CA" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+      <linearGradient id="leafPurple" x1="0" y1="0" x2="1" y2="1">
+        <stop stopColor="#E9D5FF" />
+        <stop offset="1" stopColor="#A855F7" />
+      </linearGradient>
+      <linearGradient id="leafPink" x1="0" y1="0" x2="1" y2="1">
+        <stop stopColor="#FCE7F3" />
+        <stop offset="1" stopColor="#F43F8F" />
+      </linearGradient>
+    </defs>
+    {/* Background Leaves (Left & Right) */}
+    <path d="M50 120 C30 100 20 70 35 50 C50 65 60 90 65 110 Z" fill="url(#leafPink)" fillOpacity="0.8" />
+    <path d="M60 135 C35 125 15 105 20 85 C40 95 60 115 70 130 Z" fill="url(#leafPurple)" fillOpacity="0.8" />
+    <path d="M230 120 C250 100 260 70 245 50 C230 65 220 90 215 110 Z" fill="url(#leafPurple)" fillOpacity="0.8" />
+    <path d="M220 135 C245 125 265 105 260 85 C240 95 220 115 210 130 Z" fill="url(#leafPink)" fillOpacity="0.8" />
+
+    {/* Floating Hearts */}
+    <path d="M68 62 C68 56 74 52 79 56 C84 52 90 56 90 62 C90 69 79 76 79 76 C79 76 68 69 68 62 Z" fill="#F43F8F" />
+    <path d="M224 60 C224 55 229 52 233 55 C237 52 242 55 242 60 C242 66 233 72 233 72 C233 72 224 66 224 60 Z" fill="#FFA0CA" />
+
+    {/* Center 3D Calendar with Bar Chart */}
+    <rect x="80" y="24" width="120" height="110" rx="20" fill="url(#calChartBg)" stroke="#FFD1E3" strokeWidth="2.5" />
+    {/* Spiral Rings */}
+    <rect x="94" y="16" width="7" height="16" rx="3.5" fill="#F43F8F" />
+    <rect x="114" y="16" width="7" height="16" rx="3.5" fill="#F43F8F" />
+    <rect x="136" y="16" width="7" height="16" rx="3.5" fill="#F43F8F" />
+    <rect x="158" y="16" width="7" height="16" rx="3.5" fill="#F43F8F" />
+    <rect x="178" y="16" width="7" height="16" rx="3.5" fill="#F43F8F" />
+
+    {/* 3D Vertical Bar Chart Columns */}
+    {/* Bar 1 (Short) */}
+    <rect x="100" y="80" width="16" height="38" rx="8" fill="url(#bar1)" />
+    {/* Bar 2 (Tall) */}
+    <rect x="124" y="52" width="16" height="66" rx="8" fill="url(#bar2)" />
+    {/* Bar 3 (Medium) */}
+    <rect x="148" y="66" width="16" height="52" rx="8" fill="url(#bar3)" />
+
+    {/* 3D Magnifying Glass on front right */}
+    <circle cx="196" cy="118" r="22" fill="#FFFFFF" stroke="url(#magGlass)" strokeWidth="6" />
+    <circle cx="196" cy="118" r="16" fill="#FCE7F3" fillOpacity="0.4" />
+    {/* Handle */}
+    <path d="M212 134 L232 154" stroke="url(#magGlass)" strokeWidth="8" strokeLinecap="round" />
+  </svg>
+);
+
+
 

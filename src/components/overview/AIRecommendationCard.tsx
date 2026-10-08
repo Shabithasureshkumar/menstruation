@@ -5,16 +5,22 @@ import type { CyclePhase } from '../../types/cycle';
 
 interface AIRecommendationCardProps {
   phase: CyclePhase | null;
+  isPeriodLogged?: boolean;
   onAskAssistant: () => void;
 }
 
 /** Phase-based general guidance (static content), with an entry point to the demo assistant. */
-export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ phase, onAskAssistant }) => {
+export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
+  phase,
+  isPeriodLogged = false,
+  onAskAssistant,
+}) => {
   const content = phase ? PHASE_CONTENT[phase] : null;
+
   return (
     <section
       aria-labelledby="phase-guidance-title"
-      className="w-full rounded-[22px] border border-[#F4EAF3] p-3 shadow-[0_8px_28px_rgba(23,21,43,0.045)]"
+      className="w-full rounded-[22px] border border-[#F4EAF3] p-3 sm:p-4 shadow-[0_8px_28px_rgba(23,21,43,0.045)] text-left"
       style={{ background: 'linear-gradient(100deg, #FFFFFF 0%, #FFF8FC 55%, #FBF5FF 100%)' }}
     >
       <div className="flex items-center justify-between gap-3 px-1 -my-0.5">
@@ -27,34 +33,48 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({ phas
           </h2>
         </div>
         <button type="button" onClick={onAskAssistant} className="group min-h-[44px] inline-flex items-center shrink-0 cursor-pointer">
-          <span className="px-4 py-2 rounded-full bg-[#F4E3FF] group-hover:bg-[#EBD3FF] text-[#8B5CF6] text-[13px] font-medium transition-colors">
+          <span className="px-4 py-1.5 rounded-full bg-[#F4E3FF] group-hover:bg-[#EBD3FF] text-[#8B5CF6] text-xs sm:text-[13px] font-bold transition-colors">
             Ask Ava
           </span>
         </button>
       </div>
 
       <div
-        className="mt-1 rounded-[18px] p-3 sm:px-4 sm:py-3.5 flex items-center gap-3 sm:gap-5"
+        className="mt-2.5 rounded-[18px] p-3 sm:px-4 sm:py-3.5 flex items-center gap-3 sm:gap-5"
         style={{ background: 'linear-gradient(100deg, #FDEAF6 0%, #F9EDFB 50%, #F2E8FF 100%)' }}
       >
         <img src={assistantImg} alt="" width={76} height={76} loading="lazy" className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 select-none" />
         <div className="min-w-0 flex-1">
-          <p className="text-xs sm:text-[13px] text-[#4B5563] leading-relaxed">
-            {content ? content.guidance : 'Add your cycle details in Settings to get phase-based guidance.'}{' '}
-            <span className="text-[#8A92A6]">General wellness information, not medical advice.</span>
-          </p>
-          {content && (
-            <ul className="mt-2 flex items-center gap-2 flex-wrap" aria-label="Suggestions">
-              {content.chips.map((chip) => (
-                <li key={chip.label} className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDE2FF] text-xs font-medium text-[#6D4AD8]">
-                  <span>{chip.label}</span>
-                  <span aria-hidden="true">{chip.emoji}</span>
-                </li>
-              ))}
-            </ul>
+          {!isPeriodLogged ? (
+            <div className="space-y-1">
+              <p className="text-xs sm:text-sm font-bold text-[#17152B] tracking-tight">
+                Start tracking to receive personalized recommendations.
+              </p>
+              <p className="text-xs sm:text-[13px] text-[#68708A] font-medium leading-relaxed">
+                Log your period and daily details to get tailored insights, health tips and suggestions based on your cycle.
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="text-xs sm:text-[13px] text-[#4B5563] leading-relaxed">
+                {content ? content.guidance : 'Add your cycle details in Settings to get phase-based guidance.'}{' '}
+                <span className="text-[#8A92A6]">General wellness information, not medical advice.</span>
+              </p>
+              {content && (
+                <ul className="mt-2 flex items-center gap-2 flex-wrap" aria-label="Suggestions">
+                  {content.chips.map((chip) => (
+                    <li key={chip.label} className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDE2FF] text-xs font-medium text-[#6D4AD8]">
+                      <span>{chip.label}</span>
+                      <span aria-hidden="true">{chip.emoji}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </div>
       </div>
     </section>
   );
 };
+

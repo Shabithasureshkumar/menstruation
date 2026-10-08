@@ -6,6 +6,8 @@ import heroBg from '../../assets/period-hero-bg.png';
 import { navigateToTab } from '../../lib/router';
 import type { CyclePhase } from '../../types/cycle';
 
+import { Visual3DCalendar } from './VisualAssets3D';
+
 interface PeriodHeroCardProps {
   phase: CyclePhase | null;
   isPeriodLogged?: boolean;
@@ -24,12 +26,14 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
     return (
       <section
         aria-label="Start your period log"
-        className="relative w-full rounded-[28px] border border-[#F3DEEB] shadow-[0_8px_32px_rgba(244,63,143,0.06)] p-5 sm:p-6 overflow-hidden flex flex-col justify-between min-h-[220px] text-left transition-all bg-white"
+        className="relative w-full rounded-[28px] border border-[#F3DEEB] shadow-[0_8px_32px_rgba(244,63,143,0.06)] p-5 sm:p-6 overflow-hidden flex flex-col justify-between min-h-[220px] text-left transition-all bg-[#FFF5FA]"
       >
-        {/* Soft radial pink glow behind the portrait */}
-        <span
+        {/* High-Resolution Source Background Artwork */}
+        <img
+          src={heroBg}
+          alt=""
           aria-hidden="true"
-          className="absolute -right-10 top-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-gradient-to-br from-[#FFE4F1]/70 to-[#FCE7F3]/40 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none select-none -z-0"
         />
 
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 w-full h-full my-auto">
@@ -46,7 +50,7 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
               style={{ fontSize: 'clamp(0.75rem, 0.85vw, 0.92rem)' }}
               className="text-[#55607A] font-medium leading-relaxed max-w-[340px]"
             >
-              Track your cycle to get personalized insights, predictions and better understand your body.
+              Log your period to get personalized insights, predictions and health tips.
             </p>
 
             <div className="pt-1">
@@ -63,6 +67,11 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
 
           {/* Right Column: Woman illustration with action pointer rays matching reference */}
           <div className="relative shrink-0 flex items-center justify-center self-center sm:self-center pr-2 select-none">
+            {/* Mini Calendar in background */}
+            <div className="hidden md:block absolute -right-2 top-4 pointer-events-none opacity-80" aria-hidden="true">
+              <Visual3DCalendar className="w-14 h-14" />
+            </div>
+
             {/* Decorative pink sparkle / pointer rays */}
             <div
               className="hidden sm:flex flex-col gap-1 absolute -left-6 top-1/2 -translate-y-1/2 pointer-events-none"

@@ -31,13 +31,21 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
     return (
       <section
         aria-label="Current Cycle Status - Not logged"
-        className="relative w-full rounded-[28px] border border-[#F3DEEB] shadow-[0_8px_32px_rgba(244,63,143,0.06)] p-5 sm:p-6 overflow-hidden flex flex-col justify-between min-h-[220px] text-left transition-all bg-white"
+        className="relative w-full rounded-[28px] border border-[#F3DEEB] shadow-[0_8px_32px_rgba(244,63,143,0.06)] p-5 sm:p-6 overflow-hidden flex flex-col justify-between min-h-[220px] text-left transition-all bg-[#FFF5FA]"
       >
+        {/* High-Resolution Source Background Artwork */}
+        <img
+          src={statusBg}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none select-none -z-0"
+        />
+
         <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6 w-full my-auto">
           <div className="flex items-center gap-4 sm:gap-6 min-w-0">
             {/* Dashed circular ring with 3D Calendar + icon matching reference */}
             <div
-              className="w-[120px] h-[120px] sm:w-[136px] sm:h-[136px] rounded-full border-2 border-dashed border-[#FCA5C5] bg-[#FFF0F6] flex items-center justify-center shrink-0 shadow-xs"
+              className="w-[120px] h-[120px] sm:w-[136px] sm:h-[136px] rounded-full border-2 border-dashed border-[#FCA5C5] bg-[#FFF0F6]/90 flex items-center justify-center shrink-0 shadow-xs"
               aria-hidden="true"
             >
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border-2 border-[#F43F8F] flex flex-col items-center justify-center shadow-md relative overflow-hidden">
@@ -71,7 +79,7 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
                 style={{ fontSize: 'clamp(0.75rem, 0.85vw, 0.92rem)' }}
                 className="text-[#68708A] font-medium leading-tight max-w-[260px]"
               >
-                Start logging to see your current phase
+                Start logging to see your current phase.
               </p>
 
               <div className="pt-1">

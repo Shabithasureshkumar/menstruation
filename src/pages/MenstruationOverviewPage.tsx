@@ -9,7 +9,6 @@ import { useDailyLog } from '../hooks/useDailyLog';
 import { ErrorState, LoadingState } from '../components/common/AsyncState';
 import { MenstruationStatusCard } from '../components/overview/MenstruationStatusCard';
 import { PeriodHeroCard } from '../components/overview/PeriodHeroCard';
-import { TrackingCardsSection } from '../components/overview/TrackingCardsSection';
 import { SixMetricCards } from '../components/overview/SixMetricCards';
 import { CycleInsightsSection } from '../components/overview/CycleInsightsSection';
 import { AIRecommendationCard } from '../components/overview/AIRecommendationCard';
@@ -78,63 +77,120 @@ export const MenstruationOverviewPage: React.FC = () => {
 
   const clotsMetric = getClotsMetric();
 
-  const metrics: (MetricCardData & { target: SubNavTab })[] = [
-    {
-      id: 'period',
-      label: 'Period Tracker',
-      value: !summary ? 'Day 2 of 5' : summary.isOnPeriod ? `Day ${summary.currentCycleDay} of ${summary.periodDuration}` : 'Day 2 of 5',
-      description: todayLog?.flow ? `${todayLog.flow} flow` : 'Moderate flow',
-      visualType: 'period-tracker-woman',
-      actionLabel: 'Open today’s log',
-      target: 'dailyLog',
-    },
-    {
-      id: 'cramps',
-      label: 'Cramps Level',
-      value: todayLog?.cramps ?? 'Moderate',
-      description: todayLog?.cramps ? 'Common during period' : 'Common during period',
-      visualType: 'cramps',
-      actionLabel: 'Open today’s log',
-      target: 'dailyLog',
-    },
-    {
-      id: 'clots',
-      label: 'Blood Flow',
-      value: clotsMetric.value,
-      description: clotsMetric.description,
-      visualType: 'clot',
-      actionLabel: 'Open today’s log',
-      target: 'dailyLog',
-    },
-    {
-      id: 'symptoms',
-      label: 'Symptoms',
-      value: symptomLabels.length > 0 ? `${symptomLabels.length} logged today` : '3 logged today',
-      description: symptomLabels.length > 0 ? symptomLabels.join(', ') : 'Cramps, Bloating, Fatigue',
-      visualType: 'symptoms',
-      actionLabel: 'Open today’s log',
-      target: 'dailyLog',
-    },
-    {
-      id: 'next-period',
-      label: 'Next Period',
-      value: summary ? formatDate(summary.nextPeriodDate, 'medium') : 'Oct 1, 2026',
-      description: summary ? `In ${plural(summary.daysUntilNextPeriod, 'day')}` : 'In 26 days',
-      visualType: 'next-period',
-      actionLabel: summary ? 'Open calendar' : 'Open settings',
-      target: summary ? 'calendar' : 'settings',
-    },
-    {
-      id: 'regularity',
-      label: 'AI PREDICTION',
-      labelStyle: 'eyebrow',
-      value: 'Regular cycle',
-      description: '84% accuracy',
-      visualType: 'ai-prediction',
-      actionLabel: 'Open settings',
-      target: 'settings',
-    },
-  ];
+  const metrics: (MetricCardData & { target: SubNavTab })[] = !isPeriodLogged
+    ? [
+        {
+          id: 'period',
+          label: 'Period Tracker',
+          value: 'Not logged',
+          description: 'Start logging to see start tracking.',
+          visualType: 'period-tracker-woman',
+          actionLabel: 'Log period',
+          target: 'dailyLog',
+        },
+        {
+          id: 'cramps',
+          label: 'Cramps Level',
+          value: todayLog?.cramps ? todayLog.cramps : 'Not logged',
+          description: todayLog?.cramps ? 'Common during period' : 'Log symptoms to track cramps.',
+          visualType: 'cramps',
+          actionLabel: 'Log cramps',
+          target: 'dailyLog',
+        },
+        {
+          id: 'clots',
+          label: 'Blood Flow',
+          value: todayLog?.flow ? clotsMetric.value : 'Not logged',
+          description: todayLog?.flow ? clotsMetric.description : 'Log your flow to see details.',
+          visualType: 'clot',
+          actionLabel: 'Log flow',
+          target: 'dailyLog',
+        },
+        {
+          id: 'symptoms',
+          label: 'Symptoms',
+          value: symptomLabels.length > 0 ? `${symptomLabels.length} logged today` : 'Not logged',
+          description: symptomLabels.length > 0 ? symptomLabels.join(', ') : 'Log symptoms to see patterns.',
+          visualType: 'symptoms',
+          actionLabel: 'Log symptoms',
+          target: 'dailyLog',
+        },
+        {
+          id: 'next-period',
+          label: 'Next Period',
+          value: 'Not available',
+          description: 'Log your period to get a prediction.',
+          visualType: 'next-period',
+          actionLabel: 'Log period',
+          target: 'dailyLog',
+        },
+        {
+          id: 'regularity',
+          label: 'AI Prediction',
+          value: 'Not available',
+          description: 'Log cycle data to unlock predictions.',
+          visualType: 'ai-prediction',
+          actionLabel: 'Log period',
+          target: 'dailyLog',
+        },
+      ]
+    : [
+        {
+          id: 'period',
+          label: 'Period Tracker',
+          value: !summary ? 'Day 2 of 5' : summary.isOnPeriod ? `Day ${summary.currentCycleDay} of ${summary.periodDuration}` : 'Day 2 of 5',
+          description: todayLog?.flow ? `${todayLog.flow} flow` : 'Moderate flow',
+          visualType: 'period-tracker-woman',
+          actionLabel: 'Open today’s log',
+          target: 'dailyLog',
+        },
+        {
+          id: 'cramps',
+          label: 'Cramps Level',
+          value: todayLog?.cramps ?? 'Moderate',
+          description: todayLog?.cramps ? 'Common during period' : 'Common during period',
+          visualType: 'cramps',
+          actionLabel: 'Open today’s log',
+          target: 'dailyLog',
+        },
+        {
+          id: 'clots',
+          label: 'Blood Flow',
+          value: clotsMetric.value,
+          description: clotsMetric.description,
+          visualType: 'clot',
+          actionLabel: 'Open today’s log',
+          target: 'dailyLog',
+        },
+        {
+          id: 'symptoms',
+          label: 'Symptoms',
+          value: symptomLabels.length > 0 ? `${symptomLabels.length} logged today` : '3 logged today',
+          description: symptomLabels.length > 0 ? symptomLabels.join(', ') : 'Cramps, Bloating, Fatigue',
+          visualType: 'symptoms',
+          actionLabel: 'Open today’s log',
+          target: 'dailyLog',
+        },
+        {
+          id: 'next-period',
+          label: 'Next Period',
+          value: summary ? formatDate(summary.nextPeriodDate, 'medium') : 'Oct 1, 2026',
+          description: summary ? `In ${plural(summary.daysUntilNextPeriod, 'day')}` : 'In 26 days',
+          visualType: 'next-period',
+          actionLabel: summary ? 'Open calendar' : 'Open settings',
+          target: summary ? 'calendar' : 'settings',
+        },
+        {
+          id: 'regularity',
+          label: 'AI PREDICTION',
+          labelStyle: 'eyebrow',
+          value: 'Regular cycle',
+          description: '84% accuracy',
+          visualType: 'ai-prediction',
+          actionLabel: 'Open settings',
+          target: 'settings',
+        },
+      ];
 
   const openMetric = (id: string) => {
     const metric = metrics.find((m) => m.id === id);
@@ -169,30 +225,31 @@ export const MenstruationOverviewPage: React.FC = () => {
         </div>
       </div>
 
-      {!isPeriodLogged ? (
-        <TrackingCardsSection
-          todayLog={todayLog}
-          onLogNow={handleOpenDailyLog}
-        />
-      ) : (
-        <>
-          <SixMetricCards metrics={metrics} onCardClick={openMetric} />
+      <SixMetricCards metrics={metrics} onCardClick={openMetric} />
 
-          <CycleInsightsSection energy={todayLog?.energy ?? null} mood={todayLog?.mood ?? null} phase={summary?.currentPhase ?? null} />
+      <CycleInsightsSection
+        energy={todayLog?.energy ?? null}
+        mood={todayLog?.mood ?? null}
+        phase={summary?.currentPhase ?? null}
+        isPeriodLogged={isPeriodLogged}
+        onLogPeriod={handleOpenDailyLog}
+      />
 
-          <AIRecommendationCard phase={summary?.currentPhase ?? null} onAskAssistant={() => setIsAssistantOpen(true)} />
+      <AIRecommendationCard
+        phase={summary?.currentPhase ?? null}
+        isPeriodLogged={isPeriodLogged}
+        onAskAssistant={() => setIsAssistantOpen(true)}
+      />
 
-          <MedicationHistorySection medications={medications} />
+      <MedicationHistorySection medications={medications} />
 
-          <WellnessCardsSection cards={wellnessCardsData} />
+      <WellnessCardsSection cards={wellnessCardsData} />
 
-          <PreviousCyclesTable
-            status={history.status}
-            cycles={history.data ?? []}
-            onRetry={history.retry}
-          />
-        </>
-      )}
+      <PreviousCyclesTable
+        status={history.status}
+        cycles={history.data ?? []}
+        onRetry={history.retry}
+      />
 
       <PeriodCareTipsModal isOpen={isTipsOpen} onClose={() => setIsTipsOpen(false)} />
       <AICycleAssistantModal

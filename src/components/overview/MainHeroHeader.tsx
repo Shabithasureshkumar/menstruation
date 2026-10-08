@@ -102,6 +102,10 @@ export const MainHeroHeader: React.FC = () => {
                   <dt className="inline">Cycle Length: </dt>
                   <dd className="inline">Not added</dd>
                 </div>
+                <div>
+                  <dt className="inline">BMI: </dt>
+                  <dd className="inline">Not added</dd>
+                </div>
               </dl>
             )}
           </div>
