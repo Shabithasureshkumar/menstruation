@@ -7,7 +7,7 @@ export interface MetricCardData {
   label: string;
   value: string;
   description: string;
-  visualType: 'period-tracker-woman' | 'cramps' | 'clot' | 'symptoms' | 'next-period' | 'ai-prediction';
+  visualType: 'period-tracker-woman' | 'cramps' | 'clot' | 'symptoms' | 'intercourse' | 'next-period' | 'ai-prediction';
   /** Where the card leads when activated (announced to screen readers). */
   actionLabel?: string;
   /** 'eyebrow' renders the label as small uppercase text without an icon. */

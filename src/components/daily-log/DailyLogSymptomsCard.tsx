@@ -1,17 +1,24 @@
-import React, { useId, useState } from 'react';
+import React, { useId } from 'react';
 import { Check, Plus } from 'lucide-react';
 import { SYMPTOMS } from '../../types/dailyLog';
 import type { SymptomKey } from '../../types/dailyLog';
 
 interface DailyLogSymptomsCardProps {
   symptoms: SymptomKey[];
+  customSymptom?: string | null;
   onToggle: (symptom: SymptomKey) => void;
+  onChangeCustomSymptom?: (value: string) => void;
   disabled?: boolean;
 }
 
-export const DailyLogSymptomsCard: React.FC<DailyLogSymptomsCardProps> = ({ symptoms, onToggle, disabled }) => {
+export const DailyLogSymptomsCard: React.FC<DailyLogSymptomsCardProps> = ({
+  symptoms,
+  customSymptom,
+  onToggle,
+  onChangeCustomSymptom,
+  disabled,
+}) => {
   const headingId = useId();
-  const [customSymptom, setCustomSymptom] = useState('');
 
   return (
     <section
@@ -23,11 +30,11 @@ export const DailyLogSymptomsCard: React.FC<DailyLogSymptomsCardProps> = ({ symp
           SYMPTOMS
         </h3>
         <p className="text-xs text-[#8A92A6] font-medium">
-          Options — select as many as you like.
+          Optional — select as many as you like.
         </p>
       </div>
 
-      <div role="group" aria-labelledby={headingId} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+      <div role="group" aria-labelledby={headingId} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
         {SYMPTOMS.map((s) => {
           const isSelected = symptoms.includes(s.id);
           return (
@@ -60,9 +67,9 @@ export const DailyLogSymptomsCard: React.FC<DailyLogSymptomsCardProps> = ({ symp
       <div className="pt-1">
         <input
           type="text"
-          value={customSymptom}
+          value={customSymptom ?? ''}
           disabled={disabled}
-          onChange={(e) => setCustomSymptom(e.target.value)}
+          onChange={(e) => onChangeCustomSymptom?.(e.target.value)}
           placeholder="Tell us what you'd like to track, e.g. Joint pain"
           className="w-full min-h-[44px] px-4 py-2.5 rounded-xl border border-[#F1DDE8] bg-white placeholder-[#9CA3AF] text-xs sm:text-sm text-[#17152B] focus:outline-none focus:ring-2 focus:ring-[#F43F8F]/30 transition-all"
         />

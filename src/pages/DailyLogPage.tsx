@@ -20,7 +20,6 @@ import { DailyLogEnergyCard } from '../components/daily-log/DailyLogEnergyCard';
 import { DailyLogMedicationCard } from '../components/daily-log/DailyLogMedicationCard';
 import { DailyLogMedicationModal } from '../components/daily-log/DailyLogMedicationModal';
 import { DailyLogAddProductModal } from '../components/daily-log/DailyLogAddProductModal';
-import { DailyLogFertilitySignsCard } from '../components/daily-log/DailyLogFertilitySignsCard';
 import { DailyLogIntercourseCard } from '../components/daily-log/DailyLogIntercourseCard';
 
 export const DailyLogPage: React.FC = () => {
@@ -76,7 +75,7 @@ export const DailyLogPage: React.FC = () => {
 
       <DailyLogAiInsightBanner phase={info?.phase ?? null} />
 
-      {/* Row: Blood Flow + Mood */}
+      {/* Row 1: Blood Flow + Mood */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch w-full">
         <DailyLogBloodFlowCard selectedFlow={draft.flow ?? 'Medium'} onSelectFlow={(v) => set('flow', v)} disabled={disabled} />
         <DailyLogMoodCard selectedMood={draft.mood ?? 'Irritable'} onSelectMood={(v) => set('mood', v)} disabled={disabled} />
@@ -85,6 +84,8 @@ export const DailyLogPage: React.FC = () => {
       {/* Full-Width Symptoms Section Matching Reference */}
       <DailyLogSymptomsCard
         symptoms={draft.symptoms.length > 0 ? draft.symptoms : DEFAULT_ACTIVE_SYMPTOMS}
+        customSymptom={draft.customSymptom}
+        onChangeCustomSymptom={(val) => set('customSymptom', val)}
         onToggle={(s: SymptomKey) =>
           log.updateDraft((d) => {
             const current: SymptomKey[] = d.symptoms.length > 0 ? d.symptoms : DEFAULT_ACTIVE_SYMPTOMS;
@@ -97,7 +98,7 @@ export const DailyLogPage: React.FC = () => {
         disabled={disabled}
       />
 
-      {/* Two Column Layout Matching Screenshot */}
+      {/* Two Column Layout Matching Reference Screenshot */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-start w-full">
         {/* Left Column: Products Used */}
         <div className="w-full">
@@ -128,8 +129,8 @@ export const DailyLogPage: React.FC = () => {
             />
             <DailyLogClotsCard
               clotsPresent={draft.clotsPresent ?? true}
-              clotSize={draft.clotSize ?? 'Small'}
-              onChangePresent={(v) => log.updateDraft((d) => ({ ...d, clotsPresent: v, clotSize: v ? (d.clotSize ?? 'Small') : null }))}
+              clotSize={draft.clotSize ?? 'Medium'}
+              onChangePresent={(v) => log.updateDraft((d) => ({ ...d, clotsPresent: v, clotSize: v ? (d.clotSize ?? 'Medium') : null }))}
               onChangeSize={(v) => set('clotSize', v)}
               disabled={disabled}
             />
@@ -148,7 +149,7 @@ export const DailyLogPage: React.FC = () => {
                   ? medsForDate
                   : [
                       { id: 'med-ibu', name: 'Ibuprofen', dose: 200, unit: 'mg', form: 'Tablet', date: selectedDate, time: '08:00', status: 'Taken' },
-                      { id: 'med-mef', name: 'Mefenamic Acid', dose: 500, unit: 'mg', form: 'Tablet', date: selectedDate, time: '13:00', status: 'Taken' },
+                      { id: 'med-mef', name: 'Mefenamic Acid', dose: 500, unit: 'mg', form: 'Tablet', date: selectedDate, time: '13:00', status: 'Skipped' },
                     ]
               }
               canAdd={canEdit}
@@ -165,35 +166,32 @@ export const DailyLogPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Fertility Signs & Intimacy / Libido */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-start w-full">
-        <DailyLogFertilitySignsCard
-          key={`${selectedDate}-fertility`}
-          cervicalMucus={draft.cervicalMucus}
-          bbtCelsius={draft.bbtCelsius}
-          lhTest={draft.lhTest}
-          onChangeMucus={(v) => set('cervicalMucus', v)}
-          onChangeBbt={(v) => set('bbtCelsius', v)}
-          onChangeLh={(v) => set('lhTest', v)}
-          onValidityChange={() => {}}
-          disabled={disabled}
-        />
-        <DailyLogIntercourseCard
-          intercourse={draft.intercourse}
-          libido={draft.libido}
-          onChangeIntercourse={(v) => set('intercourse', v)}
-          onChangeLibido={(v) => set('libido', v)}
-          disabled={disabled}
-        />
-      </div>
+      {/* Full-width Intercourse Section Matching Reference */}
+      <DailyLogIntercourseCard
+        intercourse={draft.intercourse ?? true}
+        protection={draft.protection ?? 'None'}
+        notes={draft.notes}
+        onChangeIntercourse={(v) => set('intercourse', v)}
+        onChangeProtection={(v) => set('protection', v)}
+        onChangeNotes={(v) => set('notes', v)}
+        onClear={() => {
+          log.updateDraft((d) => ({
+            ...d,
+            intercourse: null,
+            protection: null,
+            notes: null,
+          }));
+        }}
+        disabled={disabled}
+      />
 
       {/* Bottom Save Log Button */}
-      <div className="flex items-center justify-end pt-4 pb-8">
+      <div className="flex items-center justify-end pt-2 pb-8">
         <button
           type="button"
           onClick={() => log.saveDraft()}
           disabled={log.isSaving || disabled}
-          className="px-10 py-3.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white font-bold text-sm tracking-wide shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-10 py-3.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white font-bold text-sm sm:text-base tracking-wide shadow-[0_6px_20px_rgba(244,63,143,0.35)] hover:shadow-[0_8px_24px_rgba(244,63,143,0.45)] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {log.isSaving ? 'Saving…' : 'Save log'}
         </button>

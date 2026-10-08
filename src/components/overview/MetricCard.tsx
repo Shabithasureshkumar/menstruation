@@ -1,10 +1,11 @@
 import React from 'react';
-import { Activity, Calendar, ChevronRight, Droplet, Droplets, Sparkles, Users } from 'lucide-react';
+import { Activity, Calendar, ChevronRight, Droplet, Droplets, Heart, Sparkles, Users } from 'lucide-react';
 import { surface } from '../common/surface';
 import type { MetricCardData } from '../../types/cycleTracker';
 import periodImg from '../../assets/period-illustration.webp';
 import nextPeriodImg from '../../assets/next-period.webp';
-import { Visual3DUterusQuestion } from './VisualAssets3D';
+import regularityImg from '../../assets/cycle-regularity.webp';
+import { Visual3DCalendar, Visual3DUterusQuestion } from './VisualAssets3D';
 
 interface MetricCardProps {
   card: MetricCardData;
@@ -14,7 +15,6 @@ interface MetricCardProps {
 const imgClass = 'max-w-full max-h-full w-auto h-auto object-contain drop-shadow-xs select-none';
 
 export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
-
   const getSmallIcon = () => {
     switch (card.visualType) {
       case 'period-tracker-woman':
@@ -25,6 +25,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
         return <Droplets className="w-4 h-4 text-[#F43F8F]" />;
       case 'symptoms':
         return <Users className="w-4 h-4 text-[#8B5CF6]" />;
+      case 'intercourse':
+        return <Heart className="w-4 h-4 text-[#F43F8F]" />;
       case 'next-period':
         return <Calendar className="w-4 h-4 text-[#F43F8F]" />;
       case 'ai-prediction':
@@ -34,7 +36,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
     }
   };
 
-  const iconBg = card.visualType === 'symptoms' || card.visualType === 'ai-prediction' ? 'bg-[#F3EEFF]' : 'bg-[#FFEEF5]';
+  const iconBg =
+    card.visualType === 'symptoms' || card.visualType === 'ai-prediction' ? 'bg-[#F3EEFF]' : 'bg-[#FFEEF5]';
 
   const getVisual = () => {
     switch (card.visualType) {
@@ -44,6 +47,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
             <img src={periodImg} alt="" width={100} height={110} loading="lazy" className={imgClass} />
           </span>
         );
+      case 'intercourse':
+        return <Visual3DCalendar className="w-14 h-14 sm:w-16 sm:h-16" />;
       case 'next-period':
         return (
           <span className="w-[76px] h-[70px] sm:w-[84px] sm:h-[76px] flex items-center justify-center">
@@ -51,7 +56,14 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
           </span>
         );
       case 'ai-prediction':
-        return <Visual3DUterusQuestion className="w-20 h-16 sm:w-24 sm:h-20" />;
+        if (card.value === 'Not available') {
+          return <Visual3DUterusQuestion className="w-20 h-16 sm:w-24 sm:h-20" />;
+        }
+        return (
+          <span className="w-[88px] h-[72px] sm:w-[104px] sm:h-[80px] flex items-center justify-center">
+            <img src={regularityImg} alt="" width={104} height={80} loading="lazy" className={imgClass} />
+          </span>
+        );
       default:
         return null;
     }

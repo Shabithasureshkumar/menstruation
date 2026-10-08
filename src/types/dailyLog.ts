@@ -87,6 +87,9 @@ export interface ProductEntry {
  * One day's self-reported log. `null` means "not recorded" — an empty log is
  * all nulls / empty arrays, never pre-filled values.
  */
+export type ProtectionType = 'None' | 'Condom' | 'Pill' | 'Other';
+export const PROTECTION_TYPES: readonly ProtectionType[] = ['None', 'Condom', 'Pill', 'Other'];
+
 export interface DailyLogEntry {
   date: DateOnly;
   flow: BloodFlow | null;
@@ -96,6 +99,7 @@ export interface DailyLogEntry {
   cramps: CrampSeverity | null;
   painScore: number | null;
   symptoms: SymptomKey[];
+  customSymptom?: string | null;
   mood: MoodType | null;
   energy: EnergyLevel | null;
   libido: LibidoLevel | null;
@@ -103,6 +107,7 @@ export interface DailyLogEntry {
   bbtCelsius: number | null;
   lhTest: LhTestResult | null;
   intercourse: boolean | null;
+  protection?: ProtectionType | null;
   products: ProductEntry[];
   /** Free-text note, up to NOTES_MAX_LENGTH characters. */
   notes: string | null;
@@ -120,6 +125,7 @@ export function createEmptyLog(date: DateOnly): DailyLogEntry {
     cramps: null,
     painScore: null,
     symptoms: [],
+    customSymptom: null,
     mood: null,
     energy: null,
     libido: null,
@@ -127,6 +133,7 @@ export function createEmptyLog(date: DateOnly): DailyLogEntry {
     bbtCelsius: null,
     lhTest: null,
     intercourse: null,
+    protection: null,
     products: [],
     notes: null,
   };
@@ -149,6 +156,7 @@ export function normalizeLog(log: DailyLogEntry): DailyLogEntry {
     cramps: log.cramps,
     painScore: log.painScore,
     symptoms: [...log.symptoms].sort(),
+    customSymptom: log.customSymptom?.trim() ? log.customSymptom.trim() : null,
     mood: log.mood,
     energy: log.energy,
     libido: log.libido,
@@ -156,6 +164,7 @@ export function normalizeLog(log: DailyLogEntry): DailyLogEntry {
     bbtCelsius: log.bbtCelsius,
     lhTest: log.lhTest,
     intercourse: log.intercourse,
+    protection: log.protection ?? null,
     products: log.products.map((p) => ({ id: p.id, type: p.type, label: p.label, size: p.size, quantity: p.quantity })),
     notes: log.notes?.trim() ? log.notes.trim() : null,
   };

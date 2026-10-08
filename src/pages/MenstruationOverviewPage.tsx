@@ -58,7 +58,7 @@ export const MenstruationOverviewPage: React.FC = () => {
         const sizeText = todayLog.clotSize ? `\n${todayLog.clotSize} clots` : '\nSmall clots';
         return {
           value: flowText,
-          description: `Clots present: ON${sizeText}`,
+          description: `Clot present : ON${sizeText}`,
         };
       }
       if (todayLog.flow) {
@@ -71,7 +71,7 @@ export const MenstruationOverviewPage: React.FC = () => {
 
     return {
       value: 'Medium',
-      description: 'Clots present: ON\nSmall clots',
+      description: 'Clot present : ON\nSmall clots',
     };
   };
 
@@ -113,6 +113,15 @@ export const MenstruationOverviewPage: React.FC = () => {
           description: symptomLabels.length > 0 ? symptomLabels.join(', ') : 'Log symptoms to see patterns.',
           visualType: 'symptoms',
           actionLabel: 'Log symptoms',
+          target: 'dailyLog',
+        },
+        {
+          id: 'intercourse',
+          label: 'Intercourse',
+          value: todayLog?.intercourse ? '1 event logged' : 'Not logged',
+          description: todayLog?.intercourse ? 'Today' : 'Log sexual activity to track patterns.',
+          visualType: 'intercourse',
+          actionLabel: 'Log intercourse',
           target: 'dailyLog',
         },
         {
@@ -173,6 +182,15 @@ export const MenstruationOverviewPage: React.FC = () => {
           target: 'dailyLog',
         },
         {
+          id: 'intercourse',
+          label: 'Intercourse',
+          value: todayLog?.intercourse === false ? 'No activity' : '1 event logged',
+          description: 'Today',
+          visualType: 'intercourse',
+          actionLabel: 'Open today’s log',
+          target: 'dailyLog',
+        },
+        {
           id: 'next-period',
           label: 'Next Period',
           value: summary ? formatDate(summary.nextPeriodDate, 'medium') : 'Oct 1, 2026',
@@ -186,7 +204,7 @@ export const MenstruationOverviewPage: React.FC = () => {
           label: 'AI PREDICTION',
           labelStyle: 'eyebrow',
           value: 'Regular cycle',
-          description: '84% accuracy',
+          description: '94% accuracy',
           visualType: 'ai-prediction',
           actionLabel: 'Open settings',
           target: 'settings',
@@ -213,7 +231,6 @@ export const MenstruationOverviewPage: React.FC = () => {
             summary={summary}
             isPeriodLogged={isPeriodLogged}
             onOpenAssistant={() => setIsAssistantOpen(true)}
-            onLogPeriod={handleOpenDailyLog}
           />
         </div>
         <div className="flex w-full">
