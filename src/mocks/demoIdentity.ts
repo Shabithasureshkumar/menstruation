@@ -11,7 +11,7 @@ import type { CurrentUser, Patient } from '../types/identity';
 export const demoPatient: Patient = {
   id: 'PT-10248',
   name: 'Jimmy Alexa',
-  ageYears: 38,
+  ageYears: 24,
   gender: 'Female',
   heightCm: 165,
   weightKg: 58,

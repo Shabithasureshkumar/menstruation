@@ -141,11 +141,11 @@ export const MenstruationOverviewPage: React.FC = () => {
 
   return (
     <div className="space-y-4 sm:space-y-5 w-full">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 items-stretch w-full">
-        <div className="md:col-span-5 lg:col-span-4 flex">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-stretch w-full">
+        <div className="flex w-full">
           <MenstruationStatusCard summary={summary} onOpenAssistant={() => setIsAssistantOpen(true)} />
         </div>
-        <div className="md:col-span-7 lg:col-span-8 flex">
+        <div className="flex w-full">
           <PeriodHeroCard phase={summary?.currentPhase ?? null} onViewTips={() => setIsTipsOpen(true)} />
         </div>
       </div>

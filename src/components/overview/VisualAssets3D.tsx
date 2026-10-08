@@ -299,3 +299,248 @@ export const Visual3DMedicine: React.FC<{
   return <Visual3DIbuprofen className={className} />;
 };
 
+// 3D Glowing Translucent Droplet with Lush Floral Petals & Botanical Bouquet (Right side of Menstruation Status Card)
+export const Visual3DPeriodDroplet: React.FC<{ className?: string }> = ({
+  className = 'w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48',
+}) => (
+  <svg
+    viewBox="0 0 200 180"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={`${className} select-none shrink-0 filter drop-shadow-[0_12px_32px_rgba(236,72,153,0.42)]`}
+  >
+    <defs>
+      {/* Radiant Background Aura Glow */}
+      <radialGradient id="dropAuraGlow" cx="50%" cy="55%" r="50%">
+        <stop offset="0%" stopColor="#F43F8F" stopOpacity="0.45" />
+        <stop offset="45%" stopColor="#E879F9" stopOpacity="0.25" />
+        <stop offset="75%" stopColor="#C084FC" stopOpacity="0.12" />
+        <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+      </radialGradient>
+
+      {/* Crystal Glass Droplet Base Gradient */}
+      <linearGradient id="dropBodyGrad" x1="100" y1="24" x2="100" y2="148" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.96" />
+        <stop offset="15%" stopColor="#FFE4EF" stopOpacity="0.94" />
+        <stop offset="45%" stopColor="#FF6EA8" stopOpacity="0.90" />
+        <stop offset="78%" stopColor="#F43F8F" stopOpacity="0.96" />
+        <stop offset="100%" stopColor="#9F1239" />
+      </linearGradient>
+
+      {/* Inner Caustic Refraction Glow */}
+      <linearGradient id="dropCausticGlow" x1="72" y1="48" x2="128" y2="136" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.88" />
+        <stop offset="35%" stopColor="#FFA0CA" stopOpacity="0.5" />
+        <stop offset="80%" stopColor="#F43F8F" stopOpacity="0.18" />
+        <stop offset="100%" stopColor="#C084FC" stopOpacity="0" />
+      </linearGradient>
+
+      {/* Botanical Petal Gradients */}
+      <linearGradient id="petalRoseVivid" x1="20" y1="100" x2="90" y2="170" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFA0CA" />
+        <stop offset="45%" stopColor="#F43F8F" />
+        <stop offset="100%" stopColor="#881337" />
+      </linearGradient>
+      <linearGradient id="petalVioletRich" x1="100" y1="100" x2="180" y2="170" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#F5D0FE" />
+        <stop offset="45%" stopColor="#C084FC" />
+        <stop offset="100%" stopColor="#6B21A8" />
+      </linearGradient>
+      <linearGradient id="petalPinkSoft" x1="60" y1="90" x2="130" y2="160" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FDE8F3" />
+        <stop offset="50%" stopColor="#F472B6" />
+        <stop offset="100%" stopColor="#BE185D" />
+      </linearGradient>
+      <linearGradient id="petalLilacSoft" x1="110" y1="90" x2="180" y2="160" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#E9D5FF" />
+        <stop offset="50%" stopColor="#A855F7" />
+        <stop offset="100%" stopColor="#581C87" />
+      </linearGradient>
+
+      {/* Specular Highlight Sheen */}
+      <linearGradient id="dropSheen" x1="78" y1="52" x2="92" y2="110" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.98" />
+        <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.65" />
+        <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+
+    {/* Radiant Background Aura */}
+    <circle cx="100" cy="95" r="85" fill="url(#dropAuraGlow)" />
+
+    {/* Background Botanical Leaves fanning lushly to the right and left */}
+    {/* Far Right Large Leaf/Petal Tier 1 */}
+    <path
+      d="M145 125 C165 105 185 85 175 60 C160 75 145 95 135 115 Z"
+      fill="url(#petalLilacSoft)"
+      fillOpacity="0.75"
+    />
+    <path
+      d="M155 140 C178 125 195 105 190 85 C172 98 155 118 145 135 Z"
+      fill="url(#petalVioletRich)"
+      fillOpacity="0.85"
+    />
+    <path
+      d="M165 155 C185 145 200 128 195 110 C180 122 165 138 152 150 Z"
+      fill="url(#petalRoseVivid)"
+      fillOpacity="0.8"
+    />
+
+    {/* Left Petal Tier 1 */}
+    <path
+      d="M55 125 C35 105 15 85 25 60 C40 75 55 95 65 115 Z"
+      fill="url(#petalRoseVivid)"
+      fillOpacity="0.75"
+    />
+    <path
+      d="M45 140 C22 125 5 105 10 85 C28 98 45 118 55 135 Z"
+      fill="url(#petalPinkSoft)"
+      fillOpacity="0.85"
+    />
+
+    {/* Mid Botanical Petals Layer 2 */}
+    <path
+      d="M60 142 C42 128 50 102 70 110 C88 118 84 144 70 154 C58 162 48 152 60 142 Z"
+      fill="url(#petalPinkSoft)"
+      fillOpacity="0.9"
+    />
+    <path
+      d="M140 142 C158 128 150 102 130 110 C112 118 116 144 130 154 C142 162 152 152 140 142 Z"
+      fill="url(#petalLilacSoft)"
+      fillOpacity="0.9"
+    />
+
+    {/* Front Floral Cushion Layer 3 */}
+    <path
+      d="M100 166 C80 158 82 136 100 128 C118 136 120 158 100 166 Z"
+      fill="url(#petalRoseVivid)"
+    />
+    <path
+      d="M78 156 C66 146 70 126 85 132 C100 138 96 158 78 156 Z"
+      fill="url(#petalPinkSoft)"
+      fillOpacity="0.95"
+    />
+    <path
+      d="M122 156 C134 146 130 126 115 132 C100 138 104 158 122 156 Z"
+      fill="url(#petalVioletRich)"
+      fillOpacity="0.95"
+    />
+
+    {/* Central 3D Glowing Glass Droplet */}
+    <path
+      d="M100 22 C100 22 52 74 52 108 C52 134 73 150 100 150 C127 150 148 134 148 108 C148 74 100 22 100 22 Z"
+      fill="url(#dropBodyGrad)"
+    />
+
+    {/* Inner Glass Contour & Refraction */}
+    <path
+      d="M100 30 C100 30 61 78 61 106 C61 127 78 141 100 141 C122 141 139 127 139 106 C139 78 100 30 100 30 Z"
+      fill="url(#dropCausticGlow)"
+    />
+
+    {/* Primary Specular Curved Highlight */}
+    <path
+      d="M78 58 C70 71 67 88 67 104 C67 113 71 118 75 114 C76 106 76 88 87 70 C91 62 86 53 78 58 Z"
+      fill="url(#dropSheen)"
+    />
+
+    {/* Secondary Top-Right Glossy Dot */}
+    <ellipse cx="114" cy="58" rx="5.5" ry="10" transform="rotate(28 114 58)" fill="#FFFFFF" fillOpacity="0.8" />
+    <circle cx="100" cy="132" r="5" fill="#FFFFFF" fillOpacity="0.5" />
+
+    {/* Sparkling Ambient Magic Stars & Glints */}
+    {/* Star 1 */}
+    <path
+      d="M156 48 Q156 56 164 56 Q156 56 156 64 Q156 56 148 56 Q156 56 156 48 Z"
+      fill="#FFFFFF"
+      opacity="0.9"
+    />
+    {/* Star 2 */}
+    <path
+      d="M44 80 Q44 86 50 86 Q44 86 44 92 Q44 86 38 86 Q44 86 44 80 Z"
+      fill="#FFA0CA"
+      opacity="0.9"
+    />
+    {/* Star 3 */}
+    <path
+      d="M136 102 Q136 106 140 106 Q136 106 136 110 Q136 106 132 106 Q136 106 136 102 Z"
+      fill="#FFFFFF"
+      opacity="0.95"
+    />
+    <circle cx="36" cy="78" r="2.5" fill="#F43F8F" fillOpacity="0.75" />
+    <circle cx="168" cy="80" r="3" fill="#C084FC" fillOpacity="0.85" />
+    <circle cx="148" cy="42" r="2.5" fill="#FFA0CA" fillOpacity="0.9" />
+    <circle cx="62" cy="44" r="2" fill="#FFFFFF" fillOpacity="0.8" />
+  </svg>
+);
+
+// 3D Botanical Floral Frame for Meditation Illustration (Right side of "You're on your period" Card)
+export const Visual3DMeditationFloralFrame: React.FC<{ className?: string }> = ({
+  className = 'w-full h-full pointer-events-none',
+}) => (
+  <svg
+    viewBox="0 0 260 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={`${className} select-none absolute inset-0 -z-1`}
+    aria-hidden="true"
+  >
+    <defs>
+      <radialGradient id="haloGlow" cx="60%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#F43F8F" stopOpacity="0.3" />
+        <stop offset="50%" stopColor="#E879F9" stopOpacity="0.15" />
+        <stop offset="100%" stopColor="#C084FC" stopOpacity="0" />
+      </radialGradient>
+      <linearGradient id="framePetalViolet" x1="160" y1="60" x2="250" y2="180" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#F5D0FE" />
+        <stop offset="45%" stopColor="#C084FC" />
+        <stop offset="100%" stopColor="#6B21A8" />
+      </linearGradient>
+      <linearGradient id="framePetalRose" x1="180" y1="100" x2="260" y2="200" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FFA0CA" />
+        <stop offset="50%" stopColor="#F43F8F" />
+        <stop offset="100%" stopColor="#881337" />
+      </linearGradient>
+      <linearGradient id="framePetalPink" x1="120" y1="120" x2="180" y2="200" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FDE8F3" />
+        <stop offset="50%" stopColor="#F472B6" />
+        <stop offset="100%" stopColor="#BE185D" />
+      </linearGradient>
+    </defs>
+
+    {/* Radiant Halo behind meditation figure */}
+    <ellipse cx="160" cy="110" rx="90" ry="80" fill="url(#haloGlow)" />
+
+    {/* Lush Layered Botanical Petals Behind Her Right & Left Sides */}
+    {/* Upper Right Fanning Petals */}
+    <path
+      d="M200 130 C225 110 248 85 240 60 C222 75 205 95 192 118 Z"
+      fill="url(#framePetalViolet)"
+      fillOpacity="0.8"
+    />
+    <path
+      d="M210 148 C238 132 258 110 252 88 C230 102 210 124 198 144 Z"
+      fill="url(#framePetalRose)"
+      fillOpacity="0.85"
+    />
+    <path
+      d="M218 165 C242 152 260 135 255 118 C238 128 220 145 205 160 Z"
+      fill="url(#framePetalViolet)"
+      fillOpacity="0.75"
+    />
+
+    {/* Lower Left Petals around hips */}
+    <path
+      d="M130 160 C110 145 95 125 102 105 C118 118 130 138 138 155 Z"
+      fill="url(#framePetalPink)"
+      fillOpacity="0.75"
+    />
+    <path
+      d="M120 178 C98 165 80 145 85 128 C102 138 120 155 130 170 Z"
+      fill="url(#framePetalRose)"
+      fillOpacity="0.7"
+    />
+  </svg>
+);
+
+

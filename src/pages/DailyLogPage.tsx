@@ -3,7 +3,7 @@ import { Info } from 'lucide-react';
 import { useDailyLog } from '../hooks/useDailyLog';
 import { useCycle, useCyclePredictions } from '../hooks/useCycle';
 import { createId } from '../lib/id';
-import type { DailyLogEntry, MedicationEntry, ProductEntry } from '../types/dailyLog';
+import type { DailyLogEntry, MedicationEntry, ProductEntry, SymptomKey } from '../types/dailyLog';
 import { ErrorState, LoadingState } from '../components/common/AsyncState';
 import { ConfirmDialog } from '../components/common/ConfirmDialog';
 import { DailyLogDateSelectorCard } from '../components/daily-log/DailyLogDateSelectorCard';
@@ -11,6 +11,7 @@ import { DailyLogPhaseHeader } from '../components/daily-log/DailyLogPhaseHeader
 import { DailyLogAiInsightBanner } from '../components/daily-log/DailyLogAiInsightBanner';
 import { DailyLogBloodFlowCard } from '../components/daily-log/DailyLogBloodFlowCard';
 import { DailyLogMoodCard } from '../components/daily-log/DailyLogMoodCard';
+import { DailyLogSymptomsCard } from '../components/daily-log/DailyLogSymptomsCard';
 import { DailyLogProductsUsedCard } from '../components/daily-log/DailyLogProductsUsedCard';
 import { DailyLogBloodColorCard } from '../components/daily-log/DailyLogBloodColorCard';
 import { DailyLogCrampsCard } from '../components/daily-log/DailyLogCrampsCard';
@@ -51,6 +52,8 @@ export const DailyLogPage: React.FC = () => {
       products: (d.products.length > 0 ? d.products : DEFAULT_PRODUCTS).map((p) => (p.id === id ? { ...p, ...patch } : p)),
     }));
 
+  const DEFAULT_ACTIVE_SYMPTOMS: SymptomKey[] = ['headache', 'breastTenderness', 'fatigue', 'nausea', 'other'];
+
   return (
     <div className="w-full space-y-6 sm:space-y-7">
       <DailyLogDateSelectorCard
@@ -71,11 +74,31 @@ export const DailyLogPage: React.FC = () => {
 
       <DailyLogAiInsightBanner phase={info?.phase ?? null} />
 
+      {/* Row: Blood Flow + Mood */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch w-full">
+        <DailyLogBloodFlowCard selectedFlow={draft.flow ?? 'Medium'} onSelectFlow={(v) => set('flow', v)} disabled={disabled} />
+        <DailyLogMoodCard selectedMood={draft.mood ?? 'Irritable'} onSelectMood={(v) => set('mood', v)} disabled={disabled} />
+      </div>
+
+      {/* Full-Width Symptoms Section Matching Reference */}
+      <DailyLogSymptomsCard
+        symptoms={draft.symptoms.length > 0 ? draft.symptoms : DEFAULT_ACTIVE_SYMPTOMS}
+        onToggle={(s: SymptomKey) =>
+          log.updateDraft((d) => {
+            const current: SymptomKey[] = d.symptoms.length > 0 ? d.symptoms : DEFAULT_ACTIVE_SYMPTOMS;
+            return {
+              ...d,
+              symptoms: current.includes(s) ? current.filter((x) => x !== s) : [...current, s],
+            };
+          })
+        }
+        disabled={disabled}
+      />
+
       {/* Two Column Layout Matching Screenshot */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-start w-full">
-        {/* Left Column: Blood Flow + Products Used */}
-        <div className="w-full space-y-5 sm:space-y-6">
-          <DailyLogBloodFlowCard selectedFlow={draft.flow ?? 'Medium'} onSelectFlow={(v) => set('flow', v)} disabled={disabled} />
+        {/* Left Column: Products Used */}
+        <div className="w-full">
           <DailyLogProductsUsedCard
             products={currentProducts}
             onChangeProduct={updateProduct}
@@ -90,9 +113,8 @@ export const DailyLogPage: React.FC = () => {
           />
         </div>
 
-        {/* Right Column: Mood + Blood Color + (Cramps/Clots) + (Energy/Medication) */}
+        {/* Right Column: Blood Color + (Cramps/Clots) + (Energy/Medication) */}
         <div className="w-full space-y-5 sm:space-y-6">
-          <DailyLogMoodCard selectedMood={draft.mood ?? 'Irritable'} onSelectMood={(v) => set('mood', v)} disabled={disabled} />
           <DailyLogBloodColorCard selectedColor={draft.bloodColor ?? 'Bright Red'} onSelectColor={(v) => set('bloodColor', v)} disabled={disabled} />
 
           {/* Row 1: Cramps Level + Clots Present */}

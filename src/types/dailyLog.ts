@@ -11,13 +11,16 @@ export type CervicalMucus = 'Dry' | 'Sticky' | 'Creamy' | 'Watery' | 'Egg white'
 export type LhTestResult = 'Negative' | 'Positive';
 
 export type SymptomKey =
+  | 'cramps'
   | 'headache'
-  | 'bloating'
-  | 'fatigue'
   | 'backPain'
+  | 'bloating'
   | 'breastTenderness'
-  | 'acne'
+  | 'fatigue'
   | 'nausea'
+  | 'acne'
+  | 'discharge'
+  | 'other'
   | 'cravings'
   | 'insomnia'
   | 'anxiety';
@@ -33,16 +36,16 @@ export const CERVICAL_MUCUS_TYPES: readonly CervicalMucus[] = ['Dry', 'Sticky', 
 export const LH_TEST_RESULTS: readonly LhTestResult[] = ['Negative', 'Positive'];
 
 export const SYMPTOMS: ReadonlyArray<{ id: SymptomKey; label: string }> = [
+  { id: 'cramps', label: 'Cramps' },
   { id: 'headache', label: 'Headache' },
-  { id: 'bloating', label: 'Bloating' },
-  { id: 'fatigue', label: 'Fatigue' },
   { id: 'backPain', label: 'Back pain' },
+  { id: 'bloating', label: 'Bloating' },
   { id: 'breastTenderness', label: 'Breast tenderness' },
-  { id: 'acne', label: 'Acne' },
+  { id: 'fatigue', label: 'Fatigue' },
   { id: 'nausea', label: 'Nausea' },
-  { id: 'cravings', label: 'Cravings' },
-  { id: 'insomnia', label: 'Insomnia' },
-  { id: 'anxiety', label: 'Anxiety' },
+  { id: 'acne', label: 'Acne' },
+  { id: 'discharge', label: 'Discharge' },
+  { id: 'other', label: 'Other' },
 ];
 
 export const PAIN_SCORE_MIN = 0;

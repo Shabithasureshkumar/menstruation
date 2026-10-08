@@ -79,7 +79,7 @@ export const MainHeroHeader: React.FC = () => {
                 </div>
                 {bmi !== null && (
                   <div>
-                    <dt className="inline">BMI : </dt>
+                    <dt className="inline">BMI: </dt>
                     <dd className="inline">{bmi}</dd>
                   </div>
                 )}
