@@ -158,18 +158,23 @@ export const DailyLogPage: React.FC = () => {
       <DailyLogIntercourseCard
         intercourse={draft.intercourse}
         protection={draft.protection ?? null}
-        notes={draft.notes}
-        onChangeIntercourse={(v) => set('intercourse', v)}
-        onChangeProtection={(v) => set('protection', v)}
-        onChangeNotes={(v) => set('notes', v)}
-        onClear={() => {
+        protectionOther={draft.protectionOther ?? null}
+        onChangeIntercourse={(v) =>
           log.updateDraft((d) => ({
             ...d,
-            intercourse: null,
-            protection: null,
-            notes: null,
-          }));
-        }}
+            intercourse: v,
+            protection: v === true ? d.protection : null,
+            protectionOther: v === true ? d.protectionOther : null,
+          }))
+        }
+        onChangeProtection={(v) =>
+          log.updateDraft((d) => ({
+            ...d,
+            protection: v,
+            protectionOther: v === 'Other' ? d.protectionOther : null,
+          }))
+        }
+        onChangeProtectionOther={(val) => set('protectionOther', val)}
         disabled={disabled}
       />
 

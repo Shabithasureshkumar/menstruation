@@ -108,6 +108,7 @@ export interface DailyLogEntry {
   lhTest: LhTestResult | null;
   intercourse: boolean | null;
   protection?: ProtectionType | null;
+  protectionOther?: string | null;
   products: ProductEntry[];
   /** Free-text note, up to NOTES_MAX_LENGTH characters. */
   notes: string | null;
@@ -134,6 +135,7 @@ export function createEmptyLog(date: DateOnly): DailyLogEntry {
     lhTest: null,
     intercourse: null,
     protection: null,
+    protectionOther: null,
     products: [],
     notes: null,
   };
@@ -165,6 +167,7 @@ export function normalizeLog(log: DailyLogEntry): DailyLogEntry {
     lhTest: log.lhTest,
     intercourse: log.intercourse,
     protection: log.protection ?? null,
+    protectionOther: log.protectionOther?.trim() ? log.protectionOther.trim() : null,
     products: log.products.map((p) => ({ id: p.id, type: p.type, label: p.label, size: p.size, quantity: p.quantity })),
     notes: log.notes?.trim() ? log.notes.trim() : null,
   };
