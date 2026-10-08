@@ -83,7 +83,7 @@ export const MenstruationOverviewPage: React.FC = () => {
           id: 'period',
           label: 'Period Tracker',
           value: 'Not logged',
-          description: 'Start logging to see start tracking.',
+          description: 'Start logging to see your current details.',
           visualType: 'period-tracker-woman',
           actionLabel: 'Log period',
           target: 'dailyLog',
@@ -126,7 +126,8 @@ export const MenstruationOverviewPage: React.FC = () => {
         },
         {
           id: 'regularity',
-          label: 'AI Prediction',
+          label: 'AI PREDICTION',
+          labelStyle: 'eyebrow',
           value: 'Not available',
           description: 'Log cycle data to unlock predictions.',
           visualType: 'ai-prediction',

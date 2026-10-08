@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, Pill, Smile, Sparkles, Zap } from 'lucide-react';
+import { Smile, Sparkles, Zap } from 'lucide-react';
 import type { EnergyLevel, MoodType } from '../../types/dailyLog';
 import type { CyclePhase } from '../../types/cycle';
 import { PHASE_CONTENT } from '../../data/phaseContent';
@@ -55,7 +55,6 @@ export const CycleInsightsSection: React.FC<CycleInsightsSectionProps> = ({
   mood,
   phase,
   isPeriodLogged = false,
-  onLogPeriod,
 }) => {
   const content = phase ? PHASE_CONTENT[phase] : null;
 
@@ -72,28 +71,21 @@ export const CycleInsightsSection: React.FC<CycleInsightsSectionProps> = ({
           style={{ background: 'linear-gradient(105deg, #FFF5F9 0%, #FDF2F8 50%, #FAF5FF 100%)' }}
         >
           <div className="flex-1 min-w-0 space-y-2.5 z-10">
-            <div className="w-10 h-10 rounded-full bg-[#FFF0F6] text-[#F43F8F] flex items-center justify-center shadow-2xs" aria-hidden="true">
-              <Pill className="w-5 h-5 -rotate-45" />
+            <div className="w-12 h-12 rounded-2xl bg-[#FFE4F1] text-[#F43F8F] flex items-center justify-center shadow-2xs" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                <path d="M18 20V10" />
+                <path d="M12 20V4" />
+                <path d="M6 20v-6" />
+              </svg>
             </div>
 
-            <h3 className="text-base sm:text-lg font-bold text-[#17152B] tracking-tight">
+            <h3 className="text-base sm:text-lg font-extrabold text-[#17152B] tracking-tight">
               Insights will appear after you start logging
             </h3>
 
-            <p className="text-xs sm:text-sm text-[#68708A] font-medium leading-relaxed max-w-lg">
+            <p className="text-xs sm:text-[13px] text-[#68708A] font-medium leading-relaxed max-w-lg">
               Log your period, symptoms and daily details to see personalized insights about your cycle, mood, energy and hormonal changes.
             </p>
-
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={onLogPeriod}
-                className="px-6 py-2.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white text-xs sm:text-sm font-bold shadow-[0_6px_18px_rgba(244,63,143,0.3)] hover:shadow-[0_8px_22px_rgba(244,63,143,0.4)] transition-all cursor-pointer inline-flex items-center gap-1.5"
-              >
-                <span>Log period</span>
-                <ChevronRight className="w-4 h-4 text-white stroke-[2.5]" aria-hidden="true" />
-              </button>
-            </div>
           </div>
 
           <div className="shrink-0 flex items-center justify-center relative select-none">

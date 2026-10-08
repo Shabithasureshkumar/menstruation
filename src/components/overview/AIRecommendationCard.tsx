@@ -46,13 +46,27 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
         <img src={assistantImg} alt="" width={76} height={76} loading="lazy" className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 select-none" />
         <div className="min-w-0 flex-1">
           {!isPeriodLogged ? (
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <p className="text-xs sm:text-sm font-bold text-[#17152B] tracking-tight">
                 Start tracking to receive personalized recommendations.
               </p>
               <p className="text-xs sm:text-[13px] text-[#68708A] font-medium leading-relaxed">
                 Log your period and daily details to get tailored insights, health tips and suggestions based on your cycle.
               </p>
+              <ul className="mt-2 flex items-center gap-2 flex-wrap" aria-label="Suggestions">
+                <li className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDE2FF] text-xs font-medium text-[#6D4AD8]">
+                  <span>Hydrate</span>
+                  <span aria-hidden="true">💧</span>
+                </li>
+                <li className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDE2FF] text-xs font-medium text-[#6D4AD8]">
+                  <span>Gentle walk</span>
+                  <span aria-hidden="true">🚶‍♀️</span>
+                </li>
+                <li className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDE2FF] text-xs font-medium text-[#6D4AD8]">
+                  <span>Sleep 8h</span>
+                  <span aria-hidden="true">😴</span>
+                </li>
+              </ul>
             </div>
           ) : (
             <>

@@ -21,7 +21,6 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
   summary,
   isPeriodLogged = false,
   onOpenAssistant,
-  onLogPeriod,
 }) => {
   const currentDay = summary?.currentCycleDay ?? 5;
   const currentPhase = summary?.currentPhase ?? 'Menstruation';
@@ -41,7 +40,7 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
           className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none select-none -z-0"
         />
 
-        <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6 w-full my-auto">
+        <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6 w-full">
           <div className="flex items-center gap-4 sm:gap-6 min-w-0">
             {/* Dashed circular ring with 3D Calendar + icon matching reference */}
             <div
@@ -53,9 +52,14 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
                   <span className="w-1.5 h-1.5 rounded-full bg-white" />
                   <span className="w-1.5 h-1.5 rounded-full bg-white" />
                 </div>
-                <span className="w-6 h-6 rounded-full bg-[#FFF0F6] text-[#F43F8F] flex items-center justify-center font-black text-sm mt-3 shadow-2xs">
-                  +
-                </span>
+                <div className="w-full grid grid-cols-3 gap-1 px-2.5 pt-4">
+                  <span className="w-2 h-2 rounded-xs bg-[#FFD1E3]" />
+                  <span className="w-2 h-2 rounded-xs bg-[#FFD1E3]" />
+                  <span className="w-2 h-2 rounded-xs bg-[#FFD1E3]" />
+                  <span className="w-2 h-2 rounded-xs bg-[#FFD1E3]" />
+                  <span className="w-2 h-2 rounded-xs bg-[#F43F8F]" />
+                  <span className="w-2 h-2 rounded-xs bg-[#FFD1E3]" />
+                </div>
               </div>
             </div>
 
@@ -81,17 +85,49 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
               >
                 Start logging to see your current phase.
               </p>
+            </div>
+          </div>
+        </div>
 
-              <div className="pt-1">
-                <button
-                  type="button"
-                  onClick={onLogPeriod}
-                  className="px-5 sm:px-6 py-2.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white text-xs sm:text-sm font-bold shadow-[0_6px_18px_rgba(244,63,143,0.3)] hover:shadow-[0_8px_22px_rgba(244,63,143,0.4)] transition-all cursor-pointer inline-flex items-center gap-1.5"
-                >
-                  <span>Log period</span>
-                  <ChevronRight className="w-4 h-4 text-white stroke-[2.5]" aria-hidden="true" />
-                </button>
-              </div>
+        {/* Bottom: Horizontal Phase Timeline */}
+        <div className="relative z-10 pt-4 mt-2 border-t border-pink-200/50">
+          <div className="relative w-full">
+            <div
+              className="absolute top-2 left-2 right-2 h-[3.5px] rounded-full bg-gradient-to-r from-[#F43F8F] via-[#F472B6] via-[#C084FC] to-[#DDD6FE]"
+              aria-hidden="true"
+            />
+
+            <div className="relative flex items-center justify-between">
+              {PHASES.map((p) => {
+                const isPeriod = p.id === 'Period';
+                return (
+                  <div key={p.id} className="flex flex-col items-center">
+                    <span
+                      aria-hidden="true"
+                      className={`rounded-full transition-all ${
+                        isPeriod
+                          ? 'w-4.5 h-4.5 bg-[#F43F8F] ring-3 ring-pink-300/80 shadow-[0_0_8px_rgba(244,63,143,0.6)] flex items-center justify-center'
+                          : p.id === 'Follicular'
+                          ? 'w-2.5 h-2.5 bg-[#F472B6]'
+                          : p.id === 'Ovulation'
+                          ? 'w-2.5 h-2.5 bg-[#A855F7]'
+                          : 'w-2.5 h-2.5 bg-[#C084FC]'
+                      }`}
+                    >
+                      {isPeriod && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-white block" />
+                      )}
+                    </span>
+                    <span
+                      className={`text-[10.5px] sm:text-[11px] mt-1.5 ${
+                        isPeriod ? 'font-black text-[#F43F8F]' : 'font-semibold text-[#68708A]'
+                      }`}
+                    >
+                      {p.label}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
