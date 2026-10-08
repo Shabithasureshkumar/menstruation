@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, ChevronRight, Clock, Heart, Lock } from 'lucide-react';
+import { Bell, ChevronRight, Clock, Heart, Lock, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import settingsCalendarImg from '../assets/settings-calendar.png';
 import { isPreventingPregnancy, isTryingToConceive } from '../types/settings';
@@ -11,6 +11,7 @@ import { LeadDaysPicker } from '../components/settings/LeadDaysPicker';
 import { ManageJourneyModal } from '../components/settings/ManageJourneyModal';
 import { JourneyIcon } from '../components/settings/JourneyIcon';
 import { getJourneyOption } from '../components/settings/JourneyOptions';
+import { TtcPregnantIllustration } from '../components/settings/TtcPregnantIllustration';
 
 const SettingsCard: React.FC<{ title: string; icon: ReactNode; iconClass: string; children: ReactNode }> = ({
   title,
@@ -35,11 +36,14 @@ export const MenstruationSettingsPage: React.FC = () => {
   const { settings, status, retry, update, setJourney } = useSettings();
   const { showToast } = useToast();
   const [journeyOpen, setJourneyOpen] = useState(false);
+  const [ttcBannerDismissed, setTtcBannerDismissed] = useState(false);
 
   if (status === 'loading') return <LoadingState label="Loading settings" rows={4} />;
   if (status === 'error') return <ErrorState message="We couldn't load your settings." onRetry={retry} />;
 
   const journey = getJourneyOption(settings.journeyType);
+  const isTTC = isTryingToConceive(settings);
+  const isPrev = isPreventingPregnancy(settings);
 
   const changeJourney = async (next: typeof settings.journeyType) => {
     const ok = await setJourney(next);
@@ -55,7 +59,7 @@ export const MenstruationSettingsPage: React.FC = () => {
           <h2 id="journey-title" className="text-xl sm:text-2xl font-bold text-[#17152B] tracking-tight">
             Health Journey Settings
           </h2>
-          <p className="text-xs sm:text-sm text-[#68708A] font-medium mt-0.5">Manage your journey and life stages</p>
+          <p className="text-xs sm:text-sm text-[#68708A] font-medium mt-0.5">Manage your journey and be stylish</p>
         </div>
 
         <div className="w-full bg-white rounded-[24px] p-6 sm:p-7 md:p-8 border border-[#F1DDE8]/80 shadow-[0_4px_20px_rgba(23,21,43,0.03)] flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden mt-3">
@@ -121,14 +125,14 @@ export const MenstruationSettingsPage: React.FC = () => {
           <SettingsCard title="Privacy" icon={<Lock className="w-4.5 h-4.5" />} iconClass="bg-[#FFF0F6] text-[#F43F8F]">
             <SettingRow
               label="End-to-end encryption"
-              description="Protect health data"
+              description="Protects health data"
               checked={true}
               onChange={() => showToast('End-to-end encryption is active for your account', 'info')}
             />
             <hr className="border-[#F1DDE8]/60 my-2" />
             <SettingRow
               label="Share with provider"
-              description="Anonymized insights"
+              description="Anonymous insights"
               checked={settings.shareWithProvider}
               onChange={(v) => update({ shareWithProvider: v })}
             />
@@ -184,7 +188,7 @@ export const MenstruationSettingsPage: React.FC = () => {
             <div className="space-y-3">
               <SettingRow
                 label="Ovulation alerts"
-                description="Notify on fertile window"
+                description="Notify fertile window"
                 checked={settings.ovulationReminders}
                 onChange={(v) => update({ ovulationReminders: v })}
               />
@@ -198,16 +202,56 @@ export const MenstruationSettingsPage: React.FC = () => {
 
           {/* Bottom Right: Fertility Goals */}
           <SettingsCard title="Fertility Goals" icon={<Heart className="w-4.5 h-4.5 fill-[#16A34A] stroke-none" />} iconClass="bg-[#DCFCE7] text-[#16A34A]">
-            <SettingRow
-              label="Trying to conceive"
-              description="Track ovulation closely"
-              checked={isTryingToConceive(settings)}
-              onChange={(v) => changeJourney(v ? 'trying_to_conceive' : 'cycle_tracking')}
-            />
+            <div className="space-y-3">
+              <SettingRow
+                label="Trying to conceive (TTC)"
+                description="Track ovulation window"
+                checked={isTTC}
+                onChange={(v) => {
+                  changeJourney(v ? 'trying_to_conceive' : 'cycle_tracking');
+                  if (v) setTtcBannerDismissed(false);
+                }}
+              />
+
+              {/* Pink confirmation banner shown when TTC is ON */}
+              {isTTC && !ttcBannerDismissed && (
+                <div className="relative rounded-2xl bg-[#FFF0F6] border border-[#F1DDE8] p-4 sm:p-4.5 flex items-center justify-between gap-3 overflow-hidden shadow-2xs">
+                  <div className="flex items-start gap-3 min-w-0 z-10">
+                    <div className="w-5 h-5 rounded-full bg-[#F43F8F] text-white flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
+                      <span className="text-xs font-bold leading-none">i</span>
+                    </div>
+                    <div className="space-y-1 min-w-0 max-w-[270px] sm:max-w-xs md:max-w-sm">
+                      <p className="text-xs sm:text-[13px] font-bold text-[#9D174D] leading-tight">
+                        You've turned on <span className="text-[#F43F8F]">Trying to conceive (TTC)</span>.
+                      </p>
+                      <p className="text-[11px] sm:text-xs text-[#68708A] font-medium leading-relaxed">
+                        The app will show your fertile window, ovulation predictions and insights to support your pregnancy journey.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0 z-10 self-start">
+                    <button
+                      type="button"
+                      onClick={() => setTtcBannerDismissed(true)}
+                      aria-label="Dismiss TTC banner"
+                      className="w-6 h-6 rounded-full text-[#68708A] hover:text-[#17152B] flex items-center justify-center transition-colors cursor-pointer"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="hidden sm:block absolute right-3 -bottom-3 pointer-events-none opacity-90 select-none">
+                    <TtcPregnantIllustration className="w-24 h-24" />
+                  </div>
+                </div>
+              )}
+            </div>
+
             <hr className="border-[#F1DDE8]/60 my-2" />
             <SettingRow
               label="Intercourse Tracking"
-              description="Tracking across all cycle phases"
+              description="Track patterns & cycle phases"
               checked={settings.intercourseTracking}
               onChange={(v) => update({ intercourseTracking: v })}
             />
@@ -219,12 +263,41 @@ export const MenstruationSettingsPage: React.FC = () => {
               onChange={(v) => update({ cycleRegularity: v })}
             />
             <hr className="border-[#F1DDE8]/60 my-2" />
-            <SettingRow
-              label="Pregnancy prevention"
-              description="Avoid fertile window"
-              checked={isPreventingPregnancy(settings)}
-              onChange={(v) => changeJourney(v ? 'pregnancy_prevention' : 'cycle_tracking')}
-            />
+
+            <div className="space-y-2">
+              <SettingRow
+                label="Pregnancy prevention"
+                description="Avoid fertility window"
+                checked={isPrev}
+                disabled={isTTC}
+                onChange={(v) => {
+                  if (!isTTC) {
+                    changeJourney(v ? 'pregnancy_prevention' : 'cycle_tracking');
+                  }
+                }}
+              />
+
+              {/* Exact TTC Disclaimer matching reference image */}
+              {isTTC && (
+                <div
+                  role="note"
+                  aria-label="Pregnancy prevention disabled disclaimer"
+                  className="rounded-xl sm:rounded-2xl bg-[#FEF9C3] border border-[#FDE68A] p-3.5 sm:p-4 flex items-start gap-3 text-left shadow-2xs mt-2"
+                >
+                  <div className="w-5 h-5 rounded-full bg-[#F59E0B] text-white flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
+                    <span className="text-xs font-black leading-none">!</span>
+                  </div>
+                  <div className="space-y-0.5 min-w-0">
+                    <h4 className="text-xs sm:text-[13px] font-bold text-[#78350F] leading-snug">
+                      Disabled while Trying to conceive (TTC) is ON.
+                    </h4>
+                    <p className="text-[11px] sm:text-xs text-[#92400E] font-medium leading-relaxed">
+                      This setting helps avoid fertile window and cannot be enabled together with TTC.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </SettingsCard>
         </div>
       </section>
