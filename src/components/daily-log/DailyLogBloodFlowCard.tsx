@@ -40,8 +40,11 @@ export const DailyLogBloodFlowCard: React.FC<DailyLogBloodFlowCardProps> = ({ se
           BLOOD FLOW
         </h3>
         <p className="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight" aria-live="polite">
-          {selectedFlow ?? 'Medium'}
+          {selectedFlow ?? 'Not logged'}
         </p>
+        {!selectedFlow && (
+          <p className="text-xs text-white/80 font-medium">Log your blood flow details</p>
+        )}
       </div>
 
       <div role="group" aria-labelledby={headingId} className="grid grid-cols-4 gap-2 sm:gap-2.5 pt-4 z-10">

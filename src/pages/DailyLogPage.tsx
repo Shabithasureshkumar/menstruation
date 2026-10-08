@@ -3,6 +3,7 @@ import { Info } from 'lucide-react';
 import { useDailyLog } from '../hooks/useDailyLog';
 import { useCycle, useCyclePredictions } from '../hooks/useCycle';
 import { createId } from '../lib/id';
+import { isLogEmpty } from '../types/dailyLog';
 import type { DailyLogEntry, MedicationEntry, ProductEntry, SymptomKey } from '../types/dailyLog';
 import { ErrorState, LoadingState } from '../components/common/AsyncState';
 import { ConfirmDialog } from '../components/common/ConfirmDialog';
@@ -39,21 +40,13 @@ export const DailyLogPage: React.FC = () => {
   const disabled = !canEdit;
   const set = <K extends keyof DailyLogEntry>(key: K, value: DailyLogEntry[K]) => log.updateDraft((d) => ({ ...d, [key]: value }));
   const medsForDate = log.medications.filter((m) => m.date === selectedDate);
-
-  const DEFAULT_PRODUCTS: ProductEntry[] = [
-    { id: 'prod-pad', type: 'Pad', label: 'Pads', size: 'Small', quantity: 2 },
-    { id: 'prod-tampon', type: 'Tampon', label: 'Tampons', size: 'Light', quantity: 2 },
-    { id: 'prod-cup', type: 'Menstrual cup', label: 'Menstrual cup', size: 'Medium', quantity: 0 },
-  ];
-  const currentProducts = draft.products.length > 0 ? draft.products : DEFAULT_PRODUCTS;
+  const isLogged = !isLogEmpty(draft);
 
   const updateProduct = (id: string, patch: Partial<Pick<ProductEntry, 'quantity' | 'size'>>) =>
     log.updateDraft((d) => ({
       ...d,
-      products: (d.products.length > 0 ? d.products : DEFAULT_PRODUCTS).map((p) => (p.id === id ? { ...p, ...patch } : p)),
+      products: d.products.map((p) => (p.id === id ? { ...p, ...patch } : p)),
     }));
-
-  const DEFAULT_ACTIVE_SYMPTOMS: SymptomKey[] = ['headache', 'breastTenderness', 'fatigue', 'nausea', 'other'];
 
   return (
     <div className="w-full space-y-6 sm:space-y-7">
@@ -64,7 +57,12 @@ export const DailyLogPage: React.FC = () => {
         onSelectDate={log.selectDate}
       />
 
-      <DailyLogPhaseHeader date={selectedDate} isToday={selectedDate === today} info={info} />
+      <DailyLogPhaseHeader
+        date={selectedDate}
+        isToday={selectedDate === today}
+        info={info}
+        isLogged={isLogged}
+      />
 
       {!canEdit && (
         <p role="note" className="flex items-start gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
@@ -73,27 +71,24 @@ export const DailyLogPage: React.FC = () => {
         </p>
       )}
 
-      <DailyLogAiInsightBanner phase={info?.phase ?? null} />
+      <DailyLogAiInsightBanner phase={info?.phase ?? null} isLogged={isLogged} />
 
       {/* Row 1: Blood Flow + Mood */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch w-full">
-        <DailyLogBloodFlowCard selectedFlow={draft.flow ?? 'Medium'} onSelectFlow={(v) => set('flow', v)} disabled={disabled} />
-        <DailyLogMoodCard selectedMood={draft.mood ?? 'Irritable'} onSelectMood={(v) => set('mood', v)} disabled={disabled} />
+        <DailyLogBloodFlowCard selectedFlow={draft.flow} onSelectFlow={(v) => set('flow', v)} disabled={disabled} />
+        <DailyLogMoodCard selectedMood={draft.mood} onSelectMood={(v) => set('mood', v)} disabled={disabled} />
       </div>
 
       {/* Full-Width Symptoms Section Matching Reference */}
       <DailyLogSymptomsCard
-        symptoms={draft.symptoms.length > 0 ? draft.symptoms : DEFAULT_ACTIVE_SYMPTOMS}
+        symptoms={draft.symptoms}
         customSymptom={draft.customSymptom}
         onChangeCustomSymptom={(val) => set('customSymptom', val)}
         onToggle={(s: SymptomKey) =>
-          log.updateDraft((d) => {
-            const current: SymptomKey[] = d.symptoms.length > 0 ? d.symptoms : DEFAULT_ACTIVE_SYMPTOMS;
-            return {
-              ...d,
-              symptoms: current.includes(s) ? current.filter((x) => x !== s) : [...current, s],
-            };
-          })
+          log.updateDraft((d) => ({
+            ...d,
+            symptoms: d.symptoms.includes(s) ? d.symptoms.filter((x) => x !== s) : [...d.symptoms, s],
+          }))
         }
         disabled={disabled}
       />
@@ -103,12 +98,12 @@ export const DailyLogPage: React.FC = () => {
         {/* Left Column: Products Used */}
         <div className="w-full">
           <DailyLogProductsUsedCard
-            products={currentProducts}
+            products={draft.products}
             onChangeProduct={updateProduct}
             onDeleteProduct={(id) =>
               log.updateDraft((d) => ({
                 ...d,
-                products: (d.products.length > 0 ? d.products : DEFAULT_PRODUCTS).filter((p) => p.id !== id),
+                products: d.products.filter((p) => p.id !== id),
               }))
             }
             onOpenAddModal={() => setProductModalOpen(true)}
@@ -118,19 +113,19 @@ export const DailyLogPage: React.FC = () => {
 
         {/* Right Column: Blood Color + (Cramps/Clots) + (Energy/Medication) */}
         <div className="w-full space-y-5 sm:space-y-6">
-          <DailyLogBloodColorCard selectedColor={draft.bloodColor ?? 'Bright Red'} onSelectColor={(v) => set('bloodColor', v)} disabled={disabled} />
+          <DailyLogBloodColorCard selectedColor={draft.bloodColor} onSelectColor={(v) => set('bloodColor', v)} disabled={disabled} />
 
           {/* Row 1: Cramps Level + Clots Present */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
             <DailyLogCrampsCard
-              cramps={draft.cramps ?? 'Mild'}
+              cramps={draft.cramps}
               onChangeCramps={(v) => set('cramps', v)}
               disabled={disabled}
             />
             <DailyLogClotsCard
-              clotsPresent={draft.clotsPresent ?? true}
-              clotSize={draft.clotSize ?? 'Medium'}
-              onChangePresent={(v) => log.updateDraft((d) => ({ ...d, clotsPresent: v, clotSize: v ? (d.clotSize ?? 'Medium') : null }))}
+              clotsPresent={draft.clotsPresent}
+              clotSize={draft.clotSize}
+              onChangePresent={(v) => log.updateDraft((d) => ({ ...d, clotsPresent: v, clotSize: v ? (d.clotSize ?? 'Small') : null }))}
               onChangeSize={(v) => set('clotSize', v)}
               disabled={disabled}
             />
@@ -139,19 +134,12 @@ export const DailyLogPage: React.FC = () => {
           {/* Row 2: Energy Level + Medication */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
             <DailyLogEnergyCard
-              energy={draft.energy ?? 'Medium'}
+              energy={draft.energy}
               onChangeEnergy={(v) => set('energy', v)}
               disabled={disabled}
             />
             <DailyLogMedicationCard
-              medications={
-                medsForDate.length > 0
-                  ? medsForDate
-                  : [
-                      { id: 'med-ibu', name: 'Ibuprofen', dose: 200, unit: 'mg', form: 'Tablet', date: selectedDate, time: '08:00', status: 'Taken' },
-                      { id: 'med-mef', name: 'Mefenamic Acid', dose: 500, unit: 'mg', form: 'Tablet', date: selectedDate, time: '13:00', status: 'Skipped' },
-                    ]
-              }
+              medications={medsForDate}
               canAdd={canEdit}
               isPending={log.isMedicationPending}
               onAdd={() => setMedModal({ open: true, editing: null })}
@@ -168,8 +156,8 @@ export const DailyLogPage: React.FC = () => {
 
       {/* Full-width Intercourse Section Matching Reference */}
       <DailyLogIntercourseCard
-        intercourse={draft.intercourse ?? true}
-        protection={draft.protection ?? 'None'}
+        intercourse={draft.intercourse}
+        protection={draft.protection ?? null}
         notes={draft.notes}
         onChangeIntercourse={(v) => set('intercourse', v)}
         onChangeProtection={(v) => set('protection', v)}
