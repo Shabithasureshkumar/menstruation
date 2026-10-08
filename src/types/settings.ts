@@ -44,7 +44,7 @@ export interface SettingsState {
 export const DEFAULT_SETTINGS: SettingsState = {
   journeyType: 'cycle_tracking',
   journeyStartedOn: null,
-  lastPeriodDate: '2026-06-14',
+  lastPeriodDate: null,
   cycleLength: 28,
   periodDuration: 5,
   periodRegularity: 'Regular',

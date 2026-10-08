@@ -60,7 +60,7 @@ export const MainHeroHeader: React.FC = () => {
                 {patient?.name ?? 'Jimmy Alexa'}
               </h2>
             </div>
-            {patient && (
+            {settings.lastPeriodDate && patient ? (
               <dl className="mt-1 text-[11px] text-white/95 leading-[1.5] font-medium">
                 <div>
                   <dt className="inline">Age: </dt>
@@ -83,6 +83,25 @@ export const MainHeroHeader: React.FC = () => {
                     <dd className="inline">{bmi}</dd>
                   </div>
                 )}
+              </dl>
+            ) : (
+              <dl className="mt-1 text-[11px] text-white/95 leading-[1.5] font-medium">
+                <div>
+                  <dt className="inline">Age: </dt>
+                  <dd className="inline">Not added</dd>
+                </div>
+                <div>
+                  <dt className="inline">Height: </dt>
+                  <dd className="inline">Not added</dd>
+                </div>
+                <div>
+                  <dt className="inline">Weight: </dt>
+                  <dd className="inline">Not added</dd>
+                </div>
+                <div>
+                  <dt className="inline">Cycle Length: </dt>
+                  <dd className="inline">Not added</dd>
+                </div>
               </dl>
             )}
           </div>

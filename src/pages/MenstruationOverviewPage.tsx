@@ -9,6 +9,7 @@ import { useDailyLog } from '../hooks/useDailyLog';
 import { ErrorState, LoadingState } from '../components/common/AsyncState';
 import { MenstruationStatusCard } from '../components/overview/MenstruationStatusCard';
 import { PeriodHeroCard } from '../components/overview/PeriodHeroCard';
+import { TrackingCardsSection } from '../components/overview/TrackingCardsSection';
 import { SixMetricCards } from '../components/overview/SixMetricCards';
 import { CycleInsightsSection } from '../components/overview/CycleInsightsSection';
 import { AIRecommendationCard } from '../components/overview/AIRecommendationCard';
@@ -44,6 +45,10 @@ export const MenstruationOverviewPage: React.FC = () => {
   }
 
   const todayLog = savedLogs[today] ?? null;
+  const isPeriodLogged = Boolean(
+    (todayLog?.flow !== null && todayLog?.flow !== undefined) ||
+    (summary !== null && summary.isOnPeriod)
+  );
   const symptomLabels = (todayLog?.symptoms ?? []).map((s) => SYMPTOMS.find((x) => x.id === s)?.label ?? s);
 
   // Derive dynamic Clots / Blood Flow card value & description from saved Daily Log
@@ -65,7 +70,6 @@ export const MenstruationOverviewPage: React.FC = () => {
       }
     }
 
-    // Default reference screenshot state
     return {
       value: 'Medium',
       description: 'Clots present: ON\nSmall clots',
@@ -139,32 +143,56 @@ export const MenstruationOverviewPage: React.FC = () => {
     navigateToTab(metric.target);
   };
 
+  const handleOpenDailyLog = () => {
+    selectDate(today);
+    navigateToTab('dailyLog');
+  };
+
   return (
     <div className="space-y-4 sm:space-y-5 w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-stretch w-full">
         <div className="flex w-full">
-          <MenstruationStatusCard summary={summary} onOpenAssistant={() => setIsAssistantOpen(true)} />
+          <MenstruationStatusCard
+            summary={summary}
+            isPeriodLogged={isPeriodLogged}
+            onOpenAssistant={() => setIsAssistantOpen(true)}
+            onLogPeriod={handleOpenDailyLog}
+          />
         </div>
         <div className="flex w-full">
-          <PeriodHeroCard phase={summary?.currentPhase ?? null} onViewTips={() => setIsTipsOpen(true)} />
+          <PeriodHeroCard
+            phase={summary?.currentPhase ?? null}
+            isPeriodLogged={isPeriodLogged}
+            onViewTips={() => setIsTipsOpen(true)}
+            onLogPeriod={handleOpenDailyLog}
+          />
         </div>
       </div>
 
-      <SixMetricCards metrics={metrics} onCardClick={openMetric} />
+      {!isPeriodLogged ? (
+        <TrackingCardsSection
+          todayLog={todayLog}
+          onLogNow={handleOpenDailyLog}
+        />
+      ) : (
+        <>
+          <SixMetricCards metrics={metrics} onCardClick={openMetric} />
 
-      <CycleInsightsSection energy={todayLog?.energy ?? null} mood={todayLog?.mood ?? null} phase={summary?.currentPhase ?? null} />
+          <CycleInsightsSection energy={todayLog?.energy ?? null} mood={todayLog?.mood ?? null} phase={summary?.currentPhase ?? null} />
 
-      <AIRecommendationCard phase={summary?.currentPhase ?? null} onAskAssistant={() => setIsAssistantOpen(true)} />
+          <AIRecommendationCard phase={summary?.currentPhase ?? null} onAskAssistant={() => setIsAssistantOpen(true)} />
 
-      <MedicationHistorySection medications={medications} />
+          <MedicationHistorySection medications={medications} />
 
-      <WellnessCardsSection cards={wellnessCardsData} />
+          <WellnessCardsSection cards={wellnessCardsData} />
 
-      <PreviousCyclesTable
-        status={history.status}
-        cycles={history.data ?? []}
-        onRetry={history.retry}
-      />
+          <PreviousCyclesTable
+            status={history.status}
+            cycles={history.data ?? []}
+            onRetry={history.retry}
+          />
+        </>
+      )}
 
       <PeriodCareTipsModal isOpen={isTipsOpen} onClose={() => setIsTipsOpen(false)} />
       <AICycleAssistantModal

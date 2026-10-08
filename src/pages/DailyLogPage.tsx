@@ -20,6 +20,8 @@ import { DailyLogEnergyCard } from '../components/daily-log/DailyLogEnergyCard';
 import { DailyLogMedicationCard } from '../components/daily-log/DailyLogMedicationCard';
 import { DailyLogMedicationModal } from '../components/daily-log/DailyLogMedicationModal';
 import { DailyLogAddProductModal } from '../components/daily-log/DailyLogAddProductModal';
+import { DailyLogFertilitySignsCard } from '../components/daily-log/DailyLogFertilitySignsCard';
+import { DailyLogIntercourseCard } from '../components/daily-log/DailyLogIntercourseCard';
 
 export const DailyLogPage: React.FC = () => {
   const log = useDailyLog();
@@ -161,6 +163,28 @@ export const DailyLogPage: React.FC = () => {
             />
           </div>
         </div>
+      </div>
+
+      {/* Fertility Signs & Intimacy / Libido */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-start w-full">
+        <DailyLogFertilitySignsCard
+          key={`${selectedDate}-fertility`}
+          cervicalMucus={draft.cervicalMucus}
+          bbtCelsius={draft.bbtCelsius}
+          lhTest={draft.lhTest}
+          onChangeMucus={(v) => set('cervicalMucus', v)}
+          onChangeBbt={(v) => set('bbtCelsius', v)}
+          onChangeLh={(v) => set('lhTest', v)}
+          onValidityChange={() => {}}
+          disabled={disabled}
+        />
+        <DailyLogIntercourseCard
+          intercourse={draft.intercourse}
+          libido={draft.libido}
+          onChangeIntercourse={(v) => set('intercourse', v)}
+          onChangeLibido={(v) => set('libido', v)}
+          disabled={disabled}
+        />
       </div>
 
       {/* Bottom Save Log Button */}

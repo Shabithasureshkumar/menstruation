@@ -5,7 +5,9 @@ import statusBg from '../../assets/menstruation-status-bg.png';
 
 interface MenstruationStatusCardProps {
   summary: CycleSummary | null;
+  isPeriodLogged?: boolean;
   onOpenAssistant: () => void;
+  onLogPeriod?: () => void;
 }
 
 const PHASES = [
@@ -15,10 +17,79 @@ const PHASES = [
   { id: 'Luteal', label: 'Luteal' },
 ];
 
-export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({ summary, onOpenAssistant }) => {
+export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
+  summary,
+  isPeriodLogged = false,
+  onOpenAssistant,
+  onLogPeriod,
+}) => {
   const currentDay = summary?.currentCycleDay ?? 5;
   const currentPhase = summary?.currentPhase ?? 'Menstruation';
   const phaseLabel = currentPhase === 'Fertile Window' ? 'Fertile Window' : `${currentPhase} Phase`;
+
+  if (!isPeriodLogged) {
+    return (
+      <section
+        aria-label="Current Cycle Status - Not logged"
+        className="relative w-full rounded-[28px] border border-[#F3DEEB] shadow-[0_8px_32px_rgba(244,63,143,0.06)] p-5 sm:p-6 overflow-hidden flex flex-col justify-between min-h-[220px] text-left transition-all bg-white"
+      >
+        <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6 w-full my-auto">
+          <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+            {/* Dashed circular ring with 3D Calendar + icon matching reference */}
+            <div
+              className="w-[120px] h-[120px] sm:w-[136px] sm:h-[136px] rounded-full border-2 border-dashed border-[#FCA5C5] bg-[#FFF0F6] flex items-center justify-center shrink-0 shadow-xs"
+              aria-hidden="true"
+            >
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border-2 border-[#F43F8F] flex flex-col items-center justify-center shadow-md relative overflow-hidden">
+                <div className="w-full h-3.5 bg-[#F43F8F] absolute top-0 flex items-center justify-around px-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                </div>
+                <span className="w-6 h-6 rounded-full bg-[#FFF0F6] text-[#F43F8F] flex items-center justify-center font-black text-sm mt-3 shadow-2xs">
+                  +
+                </span>
+              </div>
+            </div>
+
+            {/* Middle: Details & Status */}
+            <div className="min-w-0 space-y-1.5 sm:space-y-2">
+              <span
+                style={{ fontSize: 'clamp(0.6rem, 0.7vw, 0.75rem)' }}
+                className="px-2.5 py-0.5 rounded-full bg-[#EDE9FE] text-[#7C3AED] font-black uppercase tracking-wider inline-flex items-center shadow-2xs"
+              >
+                STATUS
+              </span>
+
+              <h2
+                style={{ fontSize: 'clamp(1.25rem, 1.5vw, 1.65rem)' }}
+                className="font-black text-[#17152B] tracking-tight leading-tight"
+              >
+                Not logged
+              </h2>
+
+              <p
+                style={{ fontSize: 'clamp(0.75rem, 0.85vw, 0.92rem)' }}
+                className="text-[#68708A] font-medium leading-tight max-w-[260px]"
+              >
+                Start logging to see your current phase
+              </p>
+
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={onLogPeriod}
+                  className="px-5 sm:px-6 py-2.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white text-xs sm:text-sm font-bold shadow-[0_6px_18px_rgba(244,63,143,0.3)] hover:shadow-[0_8px_22px_rgba(244,63,143,0.4)] transition-all cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  <span>Log period</span>
+                  <ChevronRight className="w-4 h-4 text-white stroke-[2.5]" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -120,7 +191,6 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({ 
               aria-hidden="true"
               className="absolute inset-0 flex flex-col items-center justify-center text-center select-none pointer-events-none"
             >
-              {/* Inner Starlight Glints */}
               <span className="text-[10px] text-pink-300 absolute top-7 right-8 animate-pulse-subtle">✦</span>
               <span className="text-[9px] text-purple-300 absolute bottom-8 left-8 animate-pulse-subtle">✦</span>
 
@@ -176,13 +246,11 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({ 
       {/* Bottom: Horizontal Phase Timeline */}
       <div className="relative z-10 pt-4 mt-2 border-t border-pink-200/50">
         <div className="relative w-full">
-          {/* Timeline Continuous Gradient Connecting Bar Track */}
           <div
             className="absolute top-2 left-2 right-2 h-[3.5px] rounded-full bg-gradient-to-r from-[#F43F8F] via-[#F472B6] via-[#C084FC] to-[#DDD6FE]"
             aria-hidden="true"
           />
 
-          {/* Timeline Nodes */}
           <div className="relative flex items-center justify-between">
             {PHASES.map((p) => {
               const isPeriod = p.id === 'Period';
@@ -206,7 +274,7 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({ 
                   </span>
                   <span
                     className={`text-[10.5px] sm:text-[11px] mt-1.5 ${
-                      isPeriod ? 'font-black text-[#F43F8F]' : 'font-semibold text-[#64748B]'
+                      isPeriod ? 'font-black text-[#F43F8F]' : 'font-semibold text-[#68708A]'
                     }`}
                   >
                     {p.label}
