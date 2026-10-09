@@ -1,5 +1,6 @@
 import React from 'react';
 import heroBg from '../../assets/period-hero-bg.png';
+import periodIllustration from '../../assets/period-illustration.webp';
 import type { CyclePhase } from '../../types/cycle';
 
 interface PeriodHeroCardProps {
@@ -92,36 +93,36 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
             style={{ fontSize: 'clamp(1.15rem, 1.4vw, 1.55rem)' }}
             className="font-black text-[#17152B] tracking-tight leading-tight"
           >
-            You're on your <span className="text-[#F43F8F]">period</span>
+            You're on your period
           </h2>
 
           <p
             style={{ fontSize: 'clamp(0.75rem, 0.85vw, 0.95rem)' }}
             className="text-[#55607A] font-medium leading-relaxed max-w-[360px]"
           >
-            Your body is shedding the uterine lining. It's normal to feel lower energy, have mild cramps and emotional changes.
+            Your body is shedding the uterine lining. It's normal to feel lower energy. Take rest, stay hydrated, and be kind to yourself.
           </p>
 
           <div className="pt-2">
             <button
               type="button"
               onClick={onViewTips}
-              className="px-5 sm:px-6 py-2.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white text-xs sm:text-sm font-bold shadow-[0_6px_18px_rgba(244,63,143,0.3)] hover:shadow-[0_8px_22px_rgba(244,63,143,0.4)] transition-all cursor-pointer inline-flex items-center gap-1.5"
+              className="px-6 py-2.5 rounded-full bg-[#F43F8F] hover:bg-[#E02874] text-white text-xs sm:text-sm font-bold shadow-[0_6px_18px_rgba(244,63,143,0.3)] hover:shadow-[0_8px_22px_rgba(244,63,143,0.4)] transition-all cursor-pointer inline-flex items-center gap-1.5"
             >
               <span>View Period Tips</span>
             </button>
           </div>
         </div>
 
-        {/* Right Column: 3D Standing Calendar with Blooming Flowers Artwork */}
-        <div className="relative shrink-0 flex items-center justify-center self-center md:self-center pr-0 select-none">
+        {/* Right Column: Meditating Woman Illustration */}
+        <div className="relative shrink-0 flex items-end justify-center self-end sm:self-center pr-2 select-none">
           <img
-            src="/images/cycle-tracker/period-banner-3d.png"
-            alt="3D calendar with blooming flowers illustration"
-            width={190}
-            height={170}
+            src={periodIllustration}
+            alt="Illustration of woman meditating"
+            width={220}
+            height={200}
             loading="lazy"
-            className="w-[130px] sm:w-[155px] md:w-[185px] h-auto object-contain select-none pointer-events-none drop-shadow-xs -my-4 -mr-1"
+            className="w-[140px] sm:w-[170px] md:w-[200px] lg:w-[220px] h-auto object-contain select-none pointer-events-none drop-shadow-sm -mb-2"
           />
         </div>
       </div>

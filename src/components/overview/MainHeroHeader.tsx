@@ -60,7 +60,7 @@ export const MainHeroHeader: React.FC = () => {
                 {patient?.name ?? 'Jimmy Alexa'}
               </h2>
             </div>
-            {settings.lastPeriodDate && patient ? (
+            {patient ? (
               <dl className="mt-1 text-[11px] text-white/95 leading-[1.5] font-medium">
                 <div>
                   <dt className="inline">Age: </dt>
@@ -75,7 +75,7 @@ export const MainHeroHeader: React.FC = () => {
                 </div>
                 <div>
                   <dt className="inline">Cycle Length: </dt>
-                  <dd className="inline">{settings.cycleLength} days (avg)</dd>
+                  <dd className="inline">{settings.cycleLength ?? 28} days (avg)</dd>
                 </div>
                 {bmi !== null && (
                   <div>

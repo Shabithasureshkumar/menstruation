@@ -273,26 +273,12 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
               <ChevronRight className="w-4 h-4 text-[#7C3AED] group-hover:translate-x-0.5 transition-transform" />
             </button>
 
-            <div className="flex items-center gap-2 pt-0.5">
-              <span className="px-3 py-0.5 rounded-full bg-[#D1FAE5] text-[#064E3B] text-[11.5px] sm:text-xs font-bold inline-flex items-center gap-1.5 border border-[#A7F3D0] shadow-2xs">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] ring-2 ring-emerald-300/60 inline-block shrink-0" aria-hidden="true" />
-                <span className="text-[#17152B]">Healthy</span>
-                <span aria-hidden="true" className="text-emerald-700">🌿</span>
+            <div className="pt-0.5">
+              <span className="text-[#F43F8F] text-[14px] sm:text-[15px] font-bold tracking-tight">
+                Healthy
               </span>
             </div>
           </div>
-        </div>
-
-        {/* Right: 3D Illustrated Girl with Hot Water Bottle & Floating Hearts */}
-        <div className="shrink-0 flex items-center justify-center select-none" aria-hidden="true">
-          <img
-            src="/images/cycle-tracker/menstruation-status-3d.png"
-            alt="3D illustration of woman holding hot water bottle"
-            width={170}
-            height={170}
-            loading="lazy"
-            className="w-[125px] sm:w-[145px] md:w-[165px] h-auto object-contain select-none pointer-events-none drop-shadow-xs -my-4 -mr-1"
-          />
         </div>
       </div>
 
