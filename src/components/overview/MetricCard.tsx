@@ -2,20 +2,13 @@ import React from 'react';
 import { Activity, Calendar, ChevronRight, Droplet, Droplets, Heart, Sparkles, Stethoscope } from 'lucide-react';
 import { surface } from '../common/surface';
 import type { MetricCardData } from '../../types/cycleTracker';
-import {
-  Visual3DPeriodPad,
-  Visual3DCrampsTorso,
-  Visual3DBloodFlowDrops,
-  Visual3DSymptomsTiredGirl,
-  Visual3DNextPeriodCalendar,
-  Visual3DAIPredictionUterus,
-  Visual3DCalendar,
-} from './VisualAssets3D';
 
 interface MetricCardProps {
   card: MetricCardData;
   onClick: () => void;
 }
+
+const imgClass = 'max-w-full max-h-full w-auto h-auto object-contain select-none pointer-events-none drop-shadow-xs transition-transform duration-200 group-hover:scale-105';
 
 export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
   const getSmallIcon = () => {
@@ -45,19 +38,83 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
   const getVisual = () => {
     switch (card.visualType) {
       case 'period-tracker-woman':
-        return <Visual3DPeriodPad className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28" />;
+        return (
+          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+            <img
+              src="/images/cycle-tracker/period-tracker-3d.png"
+              alt="3D menstrual pad illustration"
+              width={104}
+              height={104}
+              loading="lazy"
+              className={imgClass}
+            />
+          </span>
+        );
       case 'cramps':
-        return <Visual3DCrampsTorso className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28" />;
+        return (
+          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+            <img
+              src="/images/cycle-tracker/cramp-level-3d.png"
+              alt="3D cramp level illustration"
+              width={104}
+              height={104}
+              loading="lazy"
+              className={imgClass}
+            />
+          </span>
+        );
       case 'clot':
-        return <Visual3DBloodFlowDrops className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28" />;
+        return (
+          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+            <img
+              src="/images/cycle-tracker/blood-flow-3d.png"
+              alt="3D blood flow illustration"
+              width={104}
+              height={104}
+              loading="lazy"
+              className={imgClass}
+            />
+          </span>
+        );
       case 'symptoms':
-        return <Visual3DSymptomsTiredGirl className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28" />;
+        return (
+          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+            <img
+              src="/images/cycle-tracker/symptoms-3d.png"
+              alt="3D symptoms illustration"
+              width={104}
+              height={104}
+              loading="lazy"
+              className={imgClass}
+            />
+          </span>
+        );
       case 'next-period':
-        return <Visual3DNextPeriodCalendar className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28" />;
+        return (
+          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+            <img
+              src="/images/cycle-tracker/next-period-calendar-3d.png"
+              alt="3D next period calendar illustration"
+              width={104}
+              height={104}
+              loading="lazy"
+              className={imgClass}
+            />
+          </span>
+        );
       case 'ai-prediction':
-        return <Visual3DAIPredictionUterus className="w-22 h-20 sm:w-26 sm:h-24 md:w-30 md:h-28" />;
-      case 'intercourse':
-        return <Visual3DCalendar className="w-16 h-16 sm:w-20 sm:h-20" />;
+        return (
+          <span className="w-[84px] h-[80px] sm:w-[98px] sm:h-[94px] md:w-[108px] md:h-[104px] flex items-center justify-center shrink-0">
+            <img
+              src="/images/cycle-tracker/ai-prediction-3d.png"
+              alt="3D AI prediction illustration"
+              width={108}
+              height={104}
+              loading="lazy"
+              className={imgClass}
+            />
+          </span>
+        );
       default:
         return null;
     }

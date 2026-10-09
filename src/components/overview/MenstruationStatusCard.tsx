@@ -2,7 +2,6 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import type { CycleSummary } from '../../types/cycle';
 import statusBg from '../../assets/menstruation-status-bg.png';
-import { Visual3DStatusCardGirl } from './VisualAssets3D';
 
 interface MenstruationStatusCardProps {
   summary: CycleSummary | null;
@@ -286,7 +285,14 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
 
         {/* Right: 3D Illustrated Girl with Hot Water Bottle & Floating Hearts */}
         <div className="shrink-0 flex items-center justify-center select-none" aria-hidden="true">
-          <Visual3DStatusCardGirl className="w-32 h-32 sm:w-36 sm:h-36 md:w-42 md:h-42 shrink-0 select-none drop-shadow-sm -my-4 -mr-1" />
+          <img
+            src="/images/cycle-tracker/menstruation-status-3d.png"
+            alt="3D illustration of woman holding hot water bottle"
+            width={170}
+            height={170}
+            loading="lazy"
+            className="w-[125px] sm:w-[145px] md:w-[165px] h-auto object-contain select-none pointer-events-none drop-shadow-xs -my-4 -mr-1"
+          />
         </div>
       </div>
 

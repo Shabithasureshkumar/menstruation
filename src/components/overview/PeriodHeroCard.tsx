@@ -1,6 +1,5 @@
 import React from 'react';
 import heroBg from '../../assets/period-hero-bg.png';
-import { Visual3DPeriodHeroCalendarFloral } from './VisualAssets3D';
 import type { CyclePhase } from '../../types/cycle';
 
 interface PeriodHeroCardProps {
@@ -58,7 +57,14 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
 
           {/* Right Column: 3D Standing Calendar Floral Artwork */}
           <div className="relative shrink-0 flex items-center justify-center self-center sm:self-center pr-0 select-none">
-            <Visual3DPeriodHeroCalendarFloral className="w-36 h-32 sm:w-44 sm:h-38 md:w-50 md:h-44 shrink-0 select-none drop-shadow-sm -my-4 -mr-1" />
+            <img
+              src="/images/cycle-tracker/period-banner-3d.png"
+              alt="3D calendar with blooming flowers illustration"
+              width={190}
+              height={170}
+              loading="lazy"
+              className="w-[130px] sm:w-[155px] md:w-[185px] h-auto object-contain select-none pointer-events-none drop-shadow-xs -my-4 -mr-1"
+            />
           </div>
         </div>
       </section>
@@ -109,7 +115,14 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
 
         {/* Right Column: 3D Standing Calendar with Blooming Flowers Artwork */}
         <div className="relative shrink-0 flex items-center justify-center self-center md:self-center pr-0 select-none">
-          <Visual3DPeriodHeroCalendarFloral className="w-36 h-32 sm:w-44 sm:h-38 md:w-50 md:h-44 shrink-0 select-none drop-shadow-sm -my-4 -mr-1" />
+          <img
+            src="/images/cycle-tracker/period-banner-3d.png"
+            alt="3D calendar with blooming flowers illustration"
+            width={190}
+            height={170}
+            loading="lazy"
+            className="w-[130px] sm:w-[155px] md:w-[185px] h-auto object-contain select-none pointer-events-none drop-shadow-xs -my-4 -mr-1"
+          />
         </div>
       </div>
     </section>
