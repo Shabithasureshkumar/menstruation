@@ -2,6 +2,7 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import type { CycleSummary } from '../../types/cycle';
 import statusBg from '../../assets/menstruation-status-bg.png';
+import { Visual3DStatusCardGirl } from './VisualAssets3D';
 
 interface MenstruationStatusCardProps {
   summary: CycleSummary | null;
@@ -283,8 +284,10 @@ export const MenstruationStatusCard: React.FC<MenstruationStatusCardProps> = ({
           </div>
         </div>
 
-        {/* Right spacing to allow the background droplet and botanical artwork to breathe */}
-        <div className="hidden sm:block w-36 md:w-44 shrink-0 pointer-events-none" aria-hidden="true" />
+        {/* Right: 3D Illustrated Girl with Hot Water Bottle & Floating Hearts */}
+        <div className="shrink-0 flex items-center justify-center select-none" aria-hidden="true">
+          <Visual3DStatusCardGirl className="w-32 h-32 sm:w-36 sm:h-36 md:w-42 md:h-42 shrink-0 select-none drop-shadow-sm -my-4 -mr-1" />
+        </div>
       </div>
 
       {/* Bottom: Horizontal Phase Timeline */}

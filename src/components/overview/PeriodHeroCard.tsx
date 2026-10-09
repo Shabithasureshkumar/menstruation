@@ -1,8 +1,6 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
-import illustration from '../../assets/period-illustration.webp';
 import heroBg from '../../assets/period-hero-bg.png';
-import { navigateToTab } from '../../lib/router';
+import { Visual3DPeriodHeroCalendarFloral } from './VisualAssets3D';
 import type { CyclePhase } from '../../types/cycle';
 
 interface PeriodHeroCardProps {
@@ -15,10 +13,7 @@ interface PeriodHeroCardProps {
 export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
   isPeriodLogged = false,
   onViewTips,
-  onLogPeriod,
 }) => {
-  const handleLog = onLogPeriod ?? (() => navigateToTab('dailyLog'));
-
   if (!isPeriodLogged) {
     return (
       <section
@@ -61,15 +56,9 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
             </div>
           </div>
 
-          {/* Right Column: 3D Female Meditation illustration */}
-          <div className="relative shrink-0 flex items-end justify-center self-end sm:self-end pr-0 select-none">
-            <img
-              src={illustration}
-              alt="Meditation & wellness"
-              width={210}
-              height={185}
-              className="w-[140px] sm:w-[170px] md:w-[195px] lg:w-[210px] h-auto object-contain object-bottom select-none filter drop-shadow-[0_10px_20px_rgba(236,72,153,0.25)] relative z-10"
-            />
+          {/* Right Column: 3D Standing Calendar Floral Artwork */}
+          <div className="relative shrink-0 flex items-center justify-center self-center sm:self-center pr-0 select-none">
+            <Visual3DPeriodHeroCalendarFloral className="w-36 h-32 sm:w-44 sm:h-38 md:w-50 md:h-44 shrink-0 select-none drop-shadow-sm -my-4 -mr-1" />
           </div>
         </div>
       </section>
@@ -94,20 +83,20 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
         {/* Left Column: Heading, description and action buttons */}
         <div className="flex-1 min-w-0 space-y-2 max-w-md z-10">
           <h2
-            style={{ fontSize: 'clamp(1.15rem, 1.4vw, 1.5rem)' }}
+            style={{ fontSize: 'clamp(1.15rem, 1.4vw, 1.55rem)' }}
             className="font-black text-[#17152B] tracking-tight leading-tight"
           >
-            You're on your period
+            You're on your <span className="text-[#F43F8F]">period</span>
           </h2>
 
           <p
             style={{ fontSize: 'clamp(0.75rem, 0.85vw, 0.95rem)' }}
             className="text-[#55607A] font-medium leading-relaxed max-w-[360px]"
           >
-            Your body is shedding the uterine lining. It's normal to feel lower energy. Take rest, stay hydrated, and be kind to yourself.
+            Your body is shedding the uterine lining. It's normal to feel lower energy, have mild cramps and emotional changes.
           </p>
 
-          <div className="flex items-center gap-2.5 pt-2 flex-wrap">
+          <div className="pt-2">
             <button
               type="button"
               onClick={onViewTips}
@@ -115,27 +104,12 @@ export const PeriodHeroCard: React.FC<PeriodHeroCardProps> = ({
             >
               <span>View Period Tips</span>
             </button>
-
-            <button
-              type="button"
-              onClick={handleLog}
-              className="px-4 sm:px-5 py-2.5 rounded-full bg-white/85 hover:bg-white text-[#D81B60] border border-pink-200/90 text-xs sm:text-sm font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer inline-flex items-center gap-1.5"
-            >
-              <span>Log Period</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
 
-        {/* Right Column: 3D Female Meditation illustration integrated with the background floral artwork */}
-        <div className="relative shrink-0 flex items-end justify-center self-end md:self-end pr-0 select-none">
-          <img
-            src={illustration}
-            alt="Meditation & wellness during period"
-            width={210}
-            height={185}
-            className="w-[140px] sm:w-[170px] md:w-[195px] lg:w-[210px] h-auto object-contain object-bottom select-none filter drop-shadow-[0_10px_20px_rgba(236,72,153,0.25)] relative z-10"
-          />
+        {/* Right Column: 3D Standing Calendar with Blooming Flowers Artwork */}
+        <div className="relative shrink-0 flex items-center justify-center self-center md:self-center pr-0 select-none">
+          <Visual3DPeriodHeroCalendarFloral className="w-36 h-32 sm:w-44 sm:h-38 md:w-50 md:h-44 shrink-0 select-none drop-shadow-sm -my-4 -mr-1" />
         </div>
       </div>
     </section>
