@@ -8,7 +8,7 @@ interface MetricCardProps {
   onClick: () => void;
 }
 
-const imgClass = 'max-w-full max-h-full w-auto h-auto object-contain select-none pointer-events-none drop-shadow-xs transition-transform duration-200 group-hover:scale-105';
+const imgClass = 'max-w-full max-h-full w-auto h-auto object-contain select-none pointer-events-none drop-shadow-xs transition-transform duration-300 group-hover:scale-105';
 
 export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
   const getSmallIcon = () => {
@@ -39,12 +39,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
     switch (card.visualType) {
       case 'period-tracker-woman':
         return (
-          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+          <span className="w-[90px] h-[85px] sm:w-[115px] sm:h-[105px] md:w-[125px] md:h-[115px] lg:w-[140px] lg:h-[125px] flex items-center justify-center shrink-0">
             <img
               src="/images/cycle-tracker/period-tracker-3d.png"
               alt="3D menstrual pad illustration"
-              width={104}
-              height={104}
+              width={140}
+              height={125}
               loading="lazy"
               className={imgClass}
             />
@@ -52,12 +52,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
         );
       case 'cramps':
         return (
-          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+          <span className="w-[85px] h-[95px] sm:w-[105px] sm:h-[120px] md:w-[115px] md:h-[130px] lg:w-[130px] lg:h-[140px] flex items-center justify-center shrink-0">
             <img
               src="/images/cycle-tracker/cramp-level-3d.png"
               alt="3D cramp level illustration"
-              width={104}
-              height={104}
+              width={130}
+              height={140}
               loading="lazy"
               className={imgClass}
             />
@@ -65,12 +65,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
         );
       case 'clot':
         return (
-          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+          <span className="w-[88px] h-[88px] sm:w-[112px] sm:h-[112px] md:w-[122px] md:h-[122px] lg:w-[135px] lg:h-[135px] flex items-center justify-center shrink-0">
             <img
               src="/images/cycle-tracker/blood-flow-3d.png"
               alt="3D blood flow illustration"
-              width={104}
-              height={104}
+              width={135}
+              height={135}
               loading="lazy"
               className={imgClass}
             />
@@ -78,12 +78,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
         );
       case 'symptoms':
         return (
-          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+          <span className="w-[88px] h-[92px] sm:w-[112px] sm:h-[115px] md:w-[122px] md:h-[125px] lg:w-[135px] lg:h-[138px] flex items-center justify-center shrink-0">
             <img
               src="/images/cycle-tracker/symptoms-3d.png"
               alt="3D symptoms illustration"
-              width={104}
-              height={104}
+              width={135}
+              height={138}
               loading="lazy"
               className={imgClass}
             />
@@ -91,12 +91,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
         );
       case 'next-period':
         return (
-          <span className="w-[80px] h-[80px] sm:w-[94px] sm:h-[94px] md:w-[104px] md:h-[104px] flex items-center justify-center shrink-0">
+          <span className="w-[95px] h-[80px] sm:w-[118px] sm:h-[96px] md:w-[128px] md:h-[105px] lg:w-[145px] lg:h-[118px] flex items-center justify-center shrink-0">
             <img
               src="/images/cycle-tracker/next-period-calendar-3d.png"
               alt="3D next period calendar illustration"
-              width={104}
-              height={104}
+              width={145}
+              height={118}
               loading="lazy"
               className={imgClass}
             />
@@ -104,12 +104,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
         );
       case 'ai-prediction':
         return (
-          <span className="w-[84px] h-[80px] sm:w-[98px] sm:h-[94px] md:w-[108px] md:h-[104px] flex items-center justify-center shrink-0">
+          <span className="w-[92px] h-[82px] sm:w-[116px] sm:h-[100px] md:w-[126px] md:h-[110px] lg:w-[142px] lg:h-[122px] flex items-center justify-center shrink-0">
             <img
               src="/images/cycle-tracker/ai-prediction-3d.png"
               alt="3D AI prediction illustration"
-              width={108}
-              height={104}
+              width={142}
+              height={122}
               loading="lazy"
               className={imgClass}
             />
@@ -127,7 +127,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({ card, onClick }) => {
     <button
       type="button"
       onClick={onClick}
-      className={`${surface.halo} group relative w-full text-left p-4 sm:p-5 flex items-center justify-between gap-3 min-h-[136px] transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(236,72,153,0.14)]`}
+      className={`${surface.halo} group relative w-full text-left p-4 sm:p-5 flex items-center justify-between gap-3 min-h-[148px] sm:min-h-[156px] transition-all duration-200 cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(236,72,153,0.16)]`}
     >
       <span className="min-w-0 flex-1 block pr-2">
         {eyebrow ? (
