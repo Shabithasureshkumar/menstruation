@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import { Bell, ChevronRight, Clock, Heart, Lock, X } from 'lucide-react';
 import type { ReactNode } from 'react';
+import type { JourneyType } from '../types/settings';
 import settingsCalendarImg from '../assets/settings-calendar.png';
 import { isPreventingPregnancy, isTryingToConceive } from '../types/settings';
 import { useSettings } from '../hooks/useSettings';
 import { useToast } from '../hooks/useToast';
 import { ErrorState, LoadingState } from '../components/common/AsyncState';
+import { ConfirmDialog } from '../components/common/ConfirmDialog';
 import { SettingRow } from '../components/settings/SettingRow';
 import { LeadDaysPicker } from '../components/settings/LeadDaysPicker';
 import { ManageJourneyModal } from '../components/settings/ManageJourneyModal';
 import { JourneyIcon } from '../components/settings/JourneyIcon';
 import { getJourneyOption } from '../components/settings/JourneyOptions';
 import { TtcPregnantIllustration } from '../components/settings/TtcPregnantIllustration';
+
+/**
+ * Trying to conceive and Pregnancy prevention are opposite goals, so only one can be
+ * active. Turning one on while the other is on asks for confirmation first.
+ */
+const CONFLICT_COPY: Record<'trying_to_conceive' | 'pregnancy_prevention', { title: string; message: string }> = {
+  trying_to_conceive: {
+    title: 'Turning Off Pregnancy Prevention',
+    message:
+      'You’ve enabled Try to Conceive. Pregnancy prevention will be turned off because this setting conflicts with your conception goal. This only changes your tracking preferences and does not provide medical advice or guarantee pregnancy.',
+  },
+  pregnancy_prevention: {
+    title: 'Turning Off Try to Conceive',
+    message:
+      'You’ve enabled Pregnancy Prevention. Try to Conceive will be turned off because these preferences conflict. This only updates your tracking settings and is not a contraceptive method or a guarantee against pregnancy.',
+  },
+};
 
 const SettingsCard: React.FC<{ title: string; icon: ReactNode; iconClass: string; children: ReactNode }> = ({
   title,
@@ -37,6 +56,8 @@ export const MenstruationSettingsPage: React.FC = () => {
   const { showToast } = useToast();
   const [journeyOpen, setJourneyOpen] = useState(false);
   const [ttcBannerDismissed, setTtcBannerDismissed] = useState(false);
+  /** Journey awaiting confirmation because it conflicts with the current one. */
+  const [pendingJourney, setPendingJourney] = useState<JourneyType | null>(null);
 
   if (status === 'loading') return <LoadingState label="Loading settings" rows={4} />;
   if (status === 'error') return <ErrorState message="We couldn't load your settings." onRetry={retry} />;
@@ -208,8 +229,16 @@ export const MenstruationSettingsPage: React.FC = () => {
                 description="Track ovulation window"
                 checked={isTTC}
                 onChange={(v) => {
-                  changeJourney(v ? 'trying_to_conceive' : 'cycle_tracking');
-                  if (v) setTtcBannerDismissed(false);
+                  if (!v) {
+                    changeJourney('cycle_tracking');
+                    return;
+                  }
+                  if (isPrev) {
+                    setPendingJourney('trying_to_conceive');
+                    return;
+                  }
+                  setTtcBannerDismissed(false);
+                  changeJourney('trying_to_conceive');
                 }}
               />
 
@@ -269,11 +298,16 @@ export const MenstruationSettingsPage: React.FC = () => {
                 label="Pregnancy prevention"
                 description="Avoid fertility window"
                 checked={isPrev}
-                disabled={isTTC}
                 onChange={(v) => {
-                  if (!isTTC) {
-                    changeJourney(v ? 'pregnancy_prevention' : 'cycle_tracking');
+                  if (!v) {
+                    changeJourney('cycle_tracking');
+                    return;
                   }
+                  if (isTTC) {
+                    setPendingJourney('pregnancy_prevention');
+                    return;
+                  }
+                  changeJourney('pregnancy_prevention');
                 }}
               />
 
@@ -289,10 +323,10 @@ export const MenstruationSettingsPage: React.FC = () => {
                   </div>
                   <div className="space-y-0.5 min-w-0">
                     <h4 className="text-xs sm:text-[13px] font-bold text-[#78350F] leading-snug">
-                      Disabled while Trying to conceive (TTC) is ON.
+                      Trying to conceive (TTC) is ON.
                     </h4>
                     <p className="text-[11px] sm:text-xs text-[#92400E] font-medium leading-relaxed">
-                      This setting helps avoid fertile window and cannot be enabled together with TTC.
+                      This setting helps avoid the fertile window, so turning it on will switch TTC off.
                     </p>
                   </div>
                 </div>
@@ -301,6 +335,24 @@ export const MenstruationSettingsPage: React.FC = () => {
           </SettingsCard>
         </div>
       </section>
+
+      <ConfirmDialog
+        isOpen={pendingJourney !== null}
+        title={pendingJourney ? CONFLICT_COPY[pendingJourney as 'trying_to_conceive' | 'pregnancy_prevention'].title : ''}
+        message={pendingJourney ? CONFLICT_COPY[pendingJourney as 'trying_to_conceive' | 'pregnancy_prevention'].message : ''}
+        confirmLabel="I Agree"
+        confirmVariant="primary"
+        icon={<Heart className="w-5 h-5 fill-current" />}
+        onConfirm={async () => {
+          if (!pendingJourney) return true;
+          if (pendingJourney === 'trying_to_conceive') setTtcBannerDismissed(false);
+          // The provider saves journeyType in one atomic update and rolls back
+          // (with an error toast) if persistence fails, so the dialog closes either way.
+          await changeJourney(pendingJourney);
+          return true;
+        }}
+        onClose={() => setPendingJourney(null)}
+      />
 
       <ManageJourneyModal
         isOpen={journeyOpen}
